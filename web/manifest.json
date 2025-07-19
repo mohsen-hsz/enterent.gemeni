@@ -1,6 +1,6 @@
 {
-    "name": "gemeni_test",
-    "short_name": "gemeni_test",
+    "name": "hotel_reservation_app",
+    "short_name": "hotel_reservation_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
