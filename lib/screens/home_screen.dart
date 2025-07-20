@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_reservation_app/screens/profile_screen.dart';
 import 'package:hotel_reservation_app/screens/reservations_screen.dart';
-import 'package:hotel_reservation_app/screens/home_content.dart'; // Import home_content
+import 'package:hotel_reservation_app/screens/home_content.dart';
+import 'package:hotel_reservation_app/screens/reservation_history_screen.dart';
+import 'package:hotel_reservation_app/screens/my_wallet_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,12 +13,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0; // Index item entekhab shode dar bottom navigation bar
+  int _selectedIndex = 0; // Index for bottom navigation bar
 
+  // List of widgets to display for each tab in bottom navigation
   static final List<Widget> _widgetOptions = <Widget>[
-    const HomeContent(), // Content asli safhe home
-    const ReservationsScreen(), // Safhe rezervha
-    const ProfileScreen(), // Safhe profile
+    const HomeContent(), // Home content
+    const ReservationsScreen(), // Reservations screen
+    const ProfileScreen(), // Profile screen
   ];
 
   void _onItemTapped(int index) {
@@ -29,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Safhe Asli', style: TextStyle(color: Colors.white)), // Safhe Asli
+        title: const Text('Home Page', style: TextStyle(color: Colors.white)), // صفحه اصلی
         backgroundColor: Colors.blue.shade700,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -46,11 +49,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundImage: Image.asset('assets/images/boy.png').image, // Tasvire profile user
+                    backgroundImage: Image.asset('assets/images/boy.png').image, // تصویر پروفایل کاربر
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    'Salam, Karbar!', // Salam, Karbar!
+                    'Hello, User!', // سلام، کاربر!
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -60,55 +63,55 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             ListTile(
-              leading: Image.asset('assets/images/user.png', width: 24, height: 24), // Icon user
-              title: const Text('Profile Man'), // Profile Man
+              leading: Image.asset('assets/images/user.png', width: 24, height: 24), // آیکون کاربر
+              title: const Text('My Profile'), // پروفایل من
               onTap: () {
-                Navigator.pop(context); // Drawer ro mibandim
-                _onItemTapped(2); // Be safhe profile mirim (index 2)
+                Navigator.pop(context); // Close the drawer
+                _onItemTapped(2); // Navigate to Profile (index 2 in _widgetOptions)
               },
             ),
             ListTile(
-              leading: Image.asset('assets/images/incoming.png', width: 24, height: 24), // Icon incoming
-              title: const Text('Rezervhaye Pish Ro'), // Rezervhaye Pish Ro
+              leading: Image.asset('assets/images/incoming.png', width: 24, height: 24), // آیکون رزروهای پیش رو
+              title: const Text('Upcoming Reservations'), // رزروهای پیش رو
               onTap: () {
-                Navigator.pop(context); // Drawer ro mibandim
-                _onItemTapped(1); // Be safhe rezervha mirim (index 1)
+                Navigator.pop(context); // Close the drawer
+                _onItemTapped(1); // Navigate to Reservations (index 1 in _widgetOptions)
               },
             ),
             ListTile(
-              leading: Image.asset('assets/images/past.png', width: 24, height: 24), // Icon past
-              title: const Text('Tarikhche Rezervha'), // Tarikhche Rezervha
+              leading: Image.asset('assets/images/past.png', width: 24, height: 24), // آیکون تاریخچه
+              title: const Text('Reservation History'), // تاریخچه رزروها
               onTap: () {
-                // TODO: Safhe tarikhche rezervha
-                Navigator.pop(context);
+                Navigator.pop(context); // Close the drawer
+                Navigator.pushNamed(context, '/reservation_history'); // Navigate to Reservation History
               },
             ),
             ListTile(
-              leading: Image.asset('assets/images/wallet.png', width: 24, height: 24), // Icon wallet
-              title: const Text('Kife Pool Man'), // Kife Pool Man
+              leading: Image.asset('assets/images/wallet.png', width: 24, height: 24), // آیکون کیف پول
+              title: const Text('My Wallet'), // کیف پول من
               onTap: () {
-                // TODO: Safhe kife pool
-                Navigator.pop(context);
+                Navigator.pop(context); // Close the drawer
+                Navigator.pushNamed(context, '/my_wallet'); // Navigate to My Wallet
               },
             ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.admin_panel_settings, color: Colors.blue),
-              title: const Text('Panel Modiriat'), // Panel Modiriat
+              title: const Text('Management Panel'), // پنل مدیریت
               onTap: () {
                 Navigator.pushNamed(context, '/admin_panel');
               },
             ),
             ListTile(
               leading: const Icon(Icons.business_center, color: Colors.blue),
-              title: const Text('Panel Servis Dahande'), // Panel Servis Dahande
+              title: const Text('Service Provider Panel'), // پنل سرویس دهنده
               onTap: () {
                 Navigator.pushNamed(context, '/service_provider_panel');
               },
             ),
             ListTile(
               leading: const Icon(Icons.person_pin, color: Colors.blue),
-              title: const Text('Panel Servis Girande'), // Panel Servis Girande
+              title: const Text('Service Consumer Panel'), // پنل سرویس گیرنده
               onTap: () {
                 Navigator.pushNamed(context, '/service_consumer_panel');
               },
@@ -116,34 +119,34 @@ class _HomeScreenState extends State<HomeScreen> {
             const Divider(),
             ListTile(
               leading: const Icon(Icons.logout, color: Colors.red),
-              title: const Text('Khorooj'), // Khorooj
+              title: const Text('Logout'), // خروج
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/'); // Be safhe login bar migardim
+                Navigator.pushReplacementNamed(context, '/'); // Return to login page
               },
             ),
           ],
         ),
       ),
-      body: _widgetOptions.elementAt(_selectedIndex), // Namayesh content bar asase index entekhab shode
+      body: _widgetOptions.elementAt(_selectedIndex), // Display content based on selected index
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Image.asset('assets/images/hotel.png', width: 24, height: 24), // Icon hotel
-            label: 'Hotelha', // Hotelha
+            icon: Image.asset('assets/images/hotel.png', width: 24, height: 24), // آیکون هتل
+            label: 'Hotels', // هتل‌ها
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('assets/images/incoming.png', width: 24, height: 24), // Icon incoming
-            label: 'Rezervha', // Rezervha
+            icon: Image.asset('assets/images/incoming.png', width: 24, height: 24), // آیکون رزروها
+            label: 'Reservations', // رزروها
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('assets/images/user.png', width: 24, height: 24), // Icon user
-            label: 'Profile', // Profile
+            icon: Image.asset('assets/images/user.png', width: 24, height: 24), // آیکون پروفایل
+            label: 'Profile', // پروفایل
           ),
         ],
-        currentIndex: _selectedIndex, // Index current entekhab shode
+        currentIndex: _selectedIndex, // Current selected index
         selectedItemColor: Colors.blue.shade700,
         unselectedItemColor: Colors.grey,
-        onTap: _onItemTapped, // Tabdil index bottom navigation
+        onTap: _onItemTapped, // Handle bottom navigation tap
       ),
     );
   }

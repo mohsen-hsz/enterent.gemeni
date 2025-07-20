@@ -7,7 +7,7 @@ class ServiceConsumerPanelScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Panel Servis Girande', style: TextStyle(color: Colors.white)), // Panel Servis Girande
+        title: const Text('Service Consumer Panel', style: TextStyle(color: Colors.white)), // پنل سرویس گیرنده
         backgroundColor: Colors.blue.shade700,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -16,48 +16,48 @@ class ServiceConsumerPanelScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionTitle('Sabt Nam va Vorood'), // Sabt Nam va Vorood
+            _buildSectionTitle('Registration and Login'), // ثبت نام و ورود
             _buildFeatureCard(
-              'Sabt Nam ba Shomare Hamrah/Email (P1)', // Sabt Nam ba Shomare Hamrah/Email
-              'Sabt name karbar ba shomare hamrah ya email.', // Sabt name karbar...
+              'Register with Mobile/Email (P1)', // ثبت نام با شماره همراه/ایمیل
+              'User registration with mobile number or email.', // ثبت نام کاربر...
             ),
             const SizedBox(height: 20),
-            _buildSectionTitle('Darkhast Servis'), // Darkhast Servis
+            _buildSectionTitle('Service Request'), // درخواست سرویس
             _buildFeatureCard(
-              'Entekhab Noe Servis (P1)', // Entekhab Noe Servis
-              'Entekhab noe servis motenaseb ba projeh.', // Entekhab noe servis...
+              'Select Service Type (P1)', // انتخاب نوع سرویس
+              'Select service type relevant to the project.', // انتخاب نوع سرویس...
             ),
             const SizedBox(height: 20),
-            _buildSectionTitle('Peygiri Vaziat Servis'), // Peygiri Vaziat Servis
+            _buildSectionTitle('Service Status Tracking'), // پیگیری وضعیت سرویس
             _buildFeatureCard(
-              'Etelaat Servis Dahande (P1)', // Etelaat Servis Dahande
-              'Moshakhasat servis dahande va vaziat servis.', // Moshakhasat servis dahande...
+              'Service Provider Information (P1)', // اطلاعات سرویس دهنده
+              'Service provider details and service status.', // مشخصات سرویس دهنده...
             ),
             const SizedBox(height: 20),
-            _buildSectionTitle('Pardakht'), // Pardakht
+            _buildSectionTitle('Payment'), // پرداخت
             _buildFeatureCard(
-              'Ravashhaye Pardakht (P2)', // Ravashhaye Pardakht
-              'Nagdi, kife pool dakhili, kart banki.', // Nagdi, kife pool...
+              'Payment Methods (P2)', // روش‌های پرداخت
+              'Cash, internal wallet, bank card.', // نقدی، کیف پول...
             ),
             _buildFeatureCard(
-              'Takhfifha va Kouponha (P2)', // Takhfifha va Kouponha
-              'Emaal code takhfif baraye safarha.', // Emaal code takhfif...
-            ),
-            const SizedBox(height: 20),
-            _buildSectionTitle('Tarikhche va Nazarat'), // Tarikhche va Nazarat
-            _buildFeatureCard(
-              'Emtiyazdehi be Servis Dahande (P3)', // Emtiyazdehi be Servis Dahande
-              'Emtiyaz dehi be servis dahande pas az takmil servis.', // Emtiyaz dehi...
+              'Discounts and Coupons (P2)', // تخفیف‌ها و کوپن‌ها
+              'Apply discount codes for trips.', // اعمال کد تخفیف...
             ),
             const SizedBox(height: 20),
-            _buildSectionTitle('Emkane Mokale Daroon Barname'), // Emkane Mokale Daroon Barname
+            _buildSectionTitle('History and Reviews (P3)'), // تاریخچه و نظرات
             _buildFeatureCard(
-              'Chat ba Servis Dahande (REST API) (P2)', // Chat ba Servis Dahande (REST API)
-              'Chat kardan ba servis dahande ba estefade az REST API.', // Chat kardan...
+              'Rate Service Provider', // امتیازدهی به سرویس دهنده
+              'Rate the service provider after service completion.', // امتیاز دهی...
+            ),
+            const SizedBox(height: 20),
+            _buildSectionTitle('In-App Communication'), // امکان مکالمه درون برنامه
+            _buildFeatureCard(
+              'Chat with Service Provider (REST API) (P2)', // چت با سرویس دهنده (REST API)
+              'Chat with service provider using REST API.', // چت کردن...
             ),
             _buildFeatureCard(
-              'Chat ba Servis Dahande (WebSocket) (P3)', // Chat ba Servis Dahande (WebSocket)
-              'Chat kardan ba servis dahande ba estefade az WebSocket.', // Chat kardan...
+              'Chat with Service Provider (WebSocket) (P3)', // چت با سرویس دهنده (WebSocket)
+              'Chat with service provider using WebSocket.', // چت کردن...
             ),
           ],
         ),

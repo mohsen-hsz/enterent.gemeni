@@ -7,7 +7,7 @@ class ServiceProviderPanelScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Panel Servis Dahande', style: TextStyle(color: Colors.white)), // Panel Servis Dahande
+        title: const Text('Service Provider Panel', style: TextStyle(color: Colors.white)), // پنل سرویس دهنده
         backgroundColor: Colors.blue.shade700,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -16,50 +16,50 @@ class ServiceProviderPanelScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionTitle('Sabt Nam va Ehraz Hoviat'), // Sabt Nam va Ehraz Hoviat
+            _buildSectionTitle('Registration and Authentication'), // ثبت نام و احراز هویت
             _buildFeatureCard(
-              'Sabt Etelaat Shakhsi (P1)', // Sabt Etelaat Shakhsi
-              'Sabt name karbar va etelaat shakhsi.', // Sabt name karbar...
+              'Personal Information Registration (P1)', // ثبت اطلاعات شخصی
+              'User registration and personal information.', // ثبت نام کاربر...
             ),
             _buildFeatureCard(
-              'Upload Madarek (P1)', // Upload Madarek
-              'Upload madarek lazam baraye ehraz hoviat.', // Upload madarek...
-            ),
-            const SizedBox(height: 20),
-            _buildSectionTitle('Modiriat Servisha'), // Modiriat Servisha
-            _buildFeatureCard(
-              'Daryaft Darkhastha (P1)', // Daryaft Darkhastha
-              'Nemayesh darkhasthaye servis, pazirash ya rad darkhastha.', // Nemayesh darkhasthaye...
-            ),
-            _buildFeatureCard(
-              'Taghir Vaziat (P1)', // Taghir Vaziat
-              'Online/Offline shodan.', // Online/Offline shodan
+              'Document Upload (P1)', // آپلود مدارک
+              'Upload required documents for authentication.', // آپلود مدارک...
             ),
             const SizedBox(height: 20),
-            _buildSectionTitle('Mali va Daramad'), // Mali va Daramad
+            _buildSectionTitle('Service Management'), // مدیریت سرویس‌ها
             _buildFeatureCard(
-              'Moshahede Daramad (P2)', // Moshahede Daramad
-              'Nemayesh daramad roozane, komision platform, va mablagh khales.', // Nemayesh daramad...
+              'Receive Requests (P1)', // دریافت درخواست‌ها
+              'Display service requests, accept or reject requests.', // نمایش درخواست‌های...
             ),
             _buildFeatureCard(
-              'Tarikhche Servisha (P2)', // Tarikhche Servisha
-              'Moshahede joziiat servishaye gozashte.', // Moshahede joziiat...
-            ),
-            const SizedBox(height: 20),
-            _buildSectionTitle('Emtiyaz va Bazkhord'), // Emtiyaz va Bazkhord
-            _buildFeatureCard(
-              'Moshahede Emtiyazat va Nazarat (P3)', // Moshahede Emtiyazat va Nazarat
-              'Moshahede emtiyazat va nazarat karbaran.', // Moshahede emtiyazat...
+              'Change Status (P1)', // تغییر وضعیت
+              'Go online/offline.', // آنلاین/آفلاین شدن
             ),
             const SizedBox(height: 20),
-            _buildSectionTitle('Emkane Mokale Daroon Barname'), // Emkane Mokale Daroon Barname
+            _buildSectionTitle('Finance and Revenue'), // مالی و درآمد
             _buildFeatureCard(
-              'Chat ba Servis Girande (REST API) (P2)', // Chat ba Servis Girande (REST API)
-              'Chat kardan ba servis girande ba estefade az REST API.', // Chat kardan...
+              'View Revenue (P2)', // مشاهده درآمد
+              'Display daily revenue, platform commission, and net amount.', // نمایش درآمد...
             ),
             _buildFeatureCard(
-              'Chat ba Servis Girande (WebSocket) (P3)', // Chat ba Servis Girande (WebSocket)
-              'Chat kardan ba servis girande ba estefade az WebSocket.', // Chat kardan...
+              'Service History (P2)', // تاریخچه سرویس‌ها
+              'View details of past services.', // مشاهده جزئیات...
+            ),
+            const SizedBox(height: 20),
+            _buildSectionTitle('Rating and Feedback'), // امتیاز و بازخورد
+            _buildFeatureCard(
+              'View Ratings and Comments (P3)', // مشاهده امتیازات و نظرات
+              'View user ratings and comments.', // مشاهده امتیازات...
+            ),
+            const SizedBox(height: 20),
+            _buildSectionTitle('In-App Communication'), // امکان مکالمه درون برنامه
+            _buildFeatureCard(
+              'Chat with Service Consumer (REST API) (P2)', // چت با سرویس گیرنده (REST API)
+              'Chat with service consumer using REST API.', // چت کردن...
+            ),
+            _buildFeatureCard(
+              'Chat with Service Consumer (WebSocket) (P3)', // چت با سرویس گیرنده (WebSocket)
+              'Chat with service consumer using WebSocket.', // چت کردن...
             ),
           ],
         ),

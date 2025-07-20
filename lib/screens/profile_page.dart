@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hotel_reservation_app/screens/personal_info_screen.dart'; // Import for Personal Information
-import 'package:hotel_reservation_app/screens/change_password_screen.dart'; // Import for Change Password
-import 'package:hotel_reservation_app/screens/settings_screen.dart'; // Import for Settings
-import 'package:hotel_reservation_app/screens/support_screen.dart'; // Import for Support
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -11,7 +7,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Profile', style: TextStyle(color: Colors.white)), // پروفایل کاربری
+        title: const Text('User Profile', style: TextStyle(color: Colors.white)), // Profile Karbari
         backgroundColor: Colors.blue.shade700,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -24,15 +20,15 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 70,
-                  backgroundImage: Image.asset('assets/images/boy.png').image, // تصویر پروفایل
+                  backgroundImage: Image.asset('assets/images/boy.jpg').image, // Tasvire profile
                 ),
                 Positioned(
                   bottom: 0,
                   right: 0,
                   child: GestureDetector(
                     onTap: () {
-                      // TODO: Functionality to change profile picture
-                      print('Change profile picture'); // تغییر تصویر پروفایل
+                      // TODO: Emkane taghir tasvire profile
+                      print('Change The Profile Image'); // Taghir tasvire profile
                     },
                     child: Container(
                       padding: const EdgeInsets.all(8),
@@ -53,7 +49,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             const Text(
-              'Ali Ahmadi', // نام کاربر
+              'Ali Ahmadi', // Name karbar
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -62,7 +58,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             const Text(
-              'ali.ahmadi@example.com', // ایمیل کاربر
+              'ali.ahmadi@example.com', // Email karbar
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey,
@@ -71,44 +67,44 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 30),
             _buildProfileInfoCard(
               icon: Icons.person,
-              title: 'Personal Information', // اطلاعات شخصی
-              subtitle: 'Name, email, mobile number', // نام، ایمیل، شماره همراه
+              title: 'Personal Information', // Etelaat Shakhsi
+              subtitle: 'Name, email, Contact Number', // Name, email, shomare hamrah
               onTap: () {
-                Navigator.pushNamed(context, '/personal_info'); // Navigate to Personal Information screen
-                print('Navigate to Personal Information'); // ویرایش اطلاعات شخصی
+                // TODO: Safhe virayesh etelaat shakhsi
+                print('Edit Personal Information'); // Virayesh etelaat shakhsi
               },
             ),
             _buildProfileInfoCard(
               icon: Icons.lock,
-              title: 'Change Password', // تغییر رمز عبور
-              subtitle: 'Change your account password', // رمز عبور خود را تغییر دهید
+              title: 'Change The PassWord', // Taghir Ramz Obour
+              subtitle: 'Change Your PassWord', // Ramz obour khod ra taghir dahid
               onTap: () {
-                Navigator.pushNamed(context, '/change_password'); // Navigate to Change Password screen
-                print('Navigate to Change Password'); // تغییر رمز عبور
+                // TODO: Safhe taghir ramz obour
+                print('Change The PassWord'); // Taghir ramz obour
               },
             ),
             _buildProfileInfoCard(
               icon: Icons.settings,
-              title: 'Settings', // تنظیمات
-              subtitle: 'User and app settings', // تنظیمات کاربری و اپلیکیشن
+              title: 'Setting', // Tanzimat
+              subtitle: 'User and App Setting', // Tanzimate karbari va app
               onTap: () {
-                Navigator.pushNamed(context, '/settings'); // Navigate to Settings screen
-                print('Navigate to Settings'); // تنظیمات
+                // TODO: Safhe tanzimat
+                print('Setting'); // Tanzimat
               },
             ),
             _buildProfileInfoCard(
               icon: Icons.help_outline,
-              title: 'Support', // پشتیبانی
-              subtitle: 'Contact support', // تماس با پشتیبانی
+              title: 'Support', // Pushtibani
+              subtitle: 'Call With Support', // Tamase ba pushtibani
               onTap: () {
-                Navigator.pushNamed(context, '/support'); // Navigate to Support screen
-                print('Navigate to Support'); // پشتیبانی
+                // TODO: Safhe pushtibani
+                print('Support'); // Pushtibani
               },
             ),
             const SizedBox(height: 30),
             ElevatedButton.icon(
               onPressed: () {
-                Navigator.pushReplacementNamed(context, '/'); // Return to login page
+                Navigator.pushReplacementNamed(context, '/'); // Be safhe login bar migardim
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
@@ -121,7 +117,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               icon: const Icon(Icons.logout),
               label: const Text(
-                'Logout', // خروج از حساب
+                'Exit From The Account', // Khorooj Az Hesab
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),

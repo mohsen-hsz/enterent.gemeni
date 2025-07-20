@@ -11,18 +11,18 @@ class ReservationsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/incoming.png', // Icon incoming
+              'assets/images/incoming.png', // آیکون رزروهای پیش رو
               height: 100,
               width: 100,
             ),
             const SizedBox(height: 20),
             const Text(
-              'Safhe Rezervha', // Safhe Rezervha
+              'Upcoming Reservations Page', // صفحه رزروهای پیش رو
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blue),
             ),
             const SizedBox(height: 10),
             const Text(
-              'Inja list rezervhaye shoma namayesh dade khahad shod.', // Inja list rezervhaye shoma namayesh dade khahad shod.
+              'Your upcoming reservations will be displayed here.', // رزروهای آینده شما در اینجا نمایش داده خواهد شد.
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
@@ -32,4 +32,3 @@ class ReservationsScreen extends StatelessWidget {
     );
   }
 }
-

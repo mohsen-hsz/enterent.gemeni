@@ -15,7 +15,7 @@ class HomeContent extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: Image.asset('assets/images/home.jpg').image, // Tasvire home
+                image: Image.asset('assets/images/home.jpg').image, // Home image
                 fit: BoxFit.cover,
               ),
               borderRadius: const BorderRadius.vertical(bottom: Radius.circular(30)),
@@ -34,7 +34,7 @@ class HomeContent extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(bottom: Radius.circular(30)),
               ),
               child: const Text(
-                'Be Hotel Reservation App Khosh Amadid!', // Be Hotel Reservation App Khosh Amadid!
+                'Welcome to Hotel Reservation App!', // به اپلیکیشن رزرو هتل خوش آمدید!
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -48,7 +48,7 @@ class HomeContent extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
-              'Hotelhaye Pishnahadi', // Hotelhaye Pishnahadi
+              'Suggested Hotels', // هتل‌های پیشنهادی
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -75,7 +75,7 @@ class HomeContent extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
-              'Maghsadhaye Mahboub', // Maghsadhaye Mahboub
+              'Popular Destinations', // مقصد‌های محبوب
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -151,7 +151,7 @@ class HomeContent extends StatelessWidget {
                 const Text('4.5'),
                 const Spacer(),
                 Text(
-                  'Az 250 Toman', // Az 250 Toman
+                  'From 250 Toman', // از 250 تومان
                   style: TextStyle(color: Colors.blue.shade700, fontWeight: FontWeight.bold),
                 ),
               ],

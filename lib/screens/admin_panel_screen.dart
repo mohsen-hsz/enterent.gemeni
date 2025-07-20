@@ -1,4 +1,3 @@
-// File: screens/admin_panel_screen.dart
 import 'package:flutter/material.dart';
 
 class AdminPanelScreen extends StatelessWidget {
@@ -8,7 +7,7 @@ class AdminPanelScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Panel Modiriat', style: TextStyle(color: Colors.white)), // Panel Modiriat
+        title: const Text('Management Panel', style: TextStyle(color: Colors.white)), // پنل مدیریت
         backgroundColor: Colors.blue.shade700,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -17,40 +16,40 @@ class AdminPanelScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionTitle('Modiriat Servis Dahande va Servis Girande'), // Modiriat Servis Dahande va Servis Girande
+            _buildSectionTitle('Service Provider and Consumer Management'), // مدیریت سرویس دهنده و سرویس گیرنده
             _buildFeatureCard(
-              'Tayid Hoviat Servis Dahande (P1)', // Tayid Hoviat Servis Dahande
-              'Barresi madarek servis dahande, moshahede list, faal/gheirfaal kardan hesab.', // Barresi madarek...
+              'Service Provider Authentication (P1)', // تایید هویت سرویس دهنده
+              'Review service provider documents, view list, activate/deactivate account.', // بررسی مدارک...
             ),
             _buildFeatureCard(
-              'Modiriat Servis Girande (P1)', // Modiriat Servis Girande
-              'Moshahede list servis girande, emkane masdood sazi hesab.', // Moshahede list...
-            ),
-            const SizedBox(height: 20),
-            _buildSectionTitle('Modiriat Servisha'), // Modiriat Servisha
-            _buildFeatureCard(
-              'Moshahede Servishaye Faal (P1)', // Moshahede Servishaye Faal
-              'Moshahede joziiat servis, filter bar asase parametrha.', // Moshahede joziiat...
+              'Service Consumer Management (P1)', // مدیریت سرویس گیرنده
+              'View service consumer list, possibility to block account.', // مشاهده لیست...
             ),
             const SizedBox(height: 20),
-            _buildSectionTitle('Modiriat Mali'), // Modiriat Mali
+            _buildSectionTitle('Service Management'), // مدیریت سرویس‌ها
             _buildFeatureCard(
-              'Mohasebe Daramad (P2)', // Mohasebe Daramad
-              'Gozaresh daramad roozane/mahane.', // Gozaresh daramad...
-            ),
-            _buildFeatureCard(
-              'Tarazkonishha (P2)', // Tarazkonishha
-              'Moshahede tarazkonishhaye pardakht servis dahande va servis girande.', // Moshahede tarazkonishhaye...
+              'View Active Services (P1)', // مشاهده سرویس‌های فعال
+              'View service details, filter by relevant parameters.', // مشاهده جزئیات...
             ),
             const SizedBox(height: 20),
-            _buildSectionTitle('Gozareshgiri va Tahlil'), // Gozareshgiri va Tahlil
+            _buildSectionTitle('Financial Management'), // مدیریت مالی
             _buildFeatureCard(
-              'Gozaresh Amalkard Servis Dahandegan (P2)', // Gozaresh Amalkard Servis Dahandegan
-              'Emtiyaz motavasset, mizane daramad.', // Emtiyaz motavasset...
+              'Revenue Calculation (P2)', // محاسبه درآمد
+              'Daily/monthly revenue report.', // گزارش درآمد...
             ),
             _buildFeatureCard(
-              'Gozaresh Nazarat Servis Girandegan (P2)', // Gozaresh Nazarat Servis Girandegan
-              'Nemayesh nazarat va emtiyazat.', // Nemayesh nazarat...
+              'Transactions (P2)', // تراکنش‌ها
+              'View service provider and consumer payment transactions.', // مشاهده تراکنش‌های...
+            ),
+            const SizedBox(height: 20),
+            _buildSectionTitle('Reporting and Analysis'), // گزارش‌گیری و تحلیل
+            _buildFeatureCard(
+              'Service Provider Performance Report (P2)', // گزارش عملکرد سرویس دهندگان
+              'Average rating, revenue amount.', // امتیاز متوسط...
+            ),
+            _buildFeatureCard(
+              'Service Consumer Feedback Report (P2)', // گزارش نظرات سرویس گیرندگان
+              'Display comments and ratings.', // نمایش نظرات...
             ),
           ],
         ),

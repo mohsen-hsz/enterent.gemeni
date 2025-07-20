@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class Login extends StatelessWidget {
+  const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class LoginScreen extends StatelessWidget {
           // Background image
           Positioned.fill(
             child: Image.asset(
-              'assets/images/bg.png', // Tasvire background
+              'assets/images/bg.png', // تصویر پس‌زمینه
               fit: BoxFit.cover,
             ),
           ),
@@ -21,7 +21,7 @@ class LoginScreen extends StatelessWidget {
             left: 0,
             right: 0,
             child: Image.asset(
-              'assets/images/wave.png', // Tasvire wave
+              'assets/images/wave.png', // تصویر موج
               fit: BoxFit.fitWidth,
             ),
           ),
@@ -32,12 +32,12 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/images/login.png', // Tasvire login
+                    'assets/images/login.png', // تصویر ورود
                     height: 150,
                   ),
                   const SizedBox(height: 40),
                   Text(
-                    'Vorood Be Hesab Karbari', // Vorood Be Hesab Karbari
+                    'Vorood Be Hesab Karbari', // ورود به حساب کاربری
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -47,7 +47,7 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(height: 30),
                   TextFormField(
                     decoration: InputDecoration(
-                      labelText: 'Email Ya Shomare Hamrah', // Email Ya Shomare Hamrah
+                      labelText: 'Email Ya Shomare Hamrah', // ایمیل یا شماره همراه
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -60,7 +60,7 @@ class LoginScreen extends StatelessWidget {
                   TextFormField(
                     obscureText: true,
                     decoration: InputDecoration(
-                      labelText: 'Ramz Obour', // Ramz Obour
+                      labelText: 'Ramz Obour', // رمز عبور
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -72,7 +72,8 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/home'); // Be safhe home mirim
+                      print('Login button pressed, navigating to /home'); // برای دیباگ: کلیک روی دکمه ورود
+                      Navigator.pushReplacementNamed(context, '/home'); // به صفحه اصلی می‌رویم
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
@@ -84,17 +85,18 @@ class LoginScreen extends StatelessWidget {
                       elevation: 5,
                     ),
                     child: const Text(
-                      'Vorood', // Vorood
+                      'Vorood', // ورود
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 20),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/signup'); // Be safhe signup mirim
+                      print('Signup text button pressed, navigating to /signup'); // برای دیباگ: کلیک روی دکمه ثبت‌نام
+                      Navigator.pushNamed(context, '/signup'); // به صفحه ثبت نام می‌رویم
                     },
                     child: Text(
-                      'Hesab Nadarid? Sabt Nam Konid', // Hesab Nadarid? Sabt Nam Konid
+                      'Hesab Nadarid? Sabt Nam Konid', // حساب ندارید؟ ثبت نام کنید
                       style: TextStyle(color: Colors.blue.shade700, fontSize: 16),
                     ),
                   ),
