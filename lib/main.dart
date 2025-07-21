@@ -16,7 +16,14 @@ import 'package:hotel_reservation_app/screens/personal_info_screen.dart';
 import 'package:hotel_reservation_app/screens/change_password_screen.dart';
 import 'package:hotel_reservation_app/screens/settings_screen.dart';
 import 'package:hotel_reservation_app/screens/support_screen.dart';
-import 'package:hotel_reservation_app/screens/add_hotel_listing_screen.dart'; // Import جدید
+import 'package:hotel_reservation_app/screens/add_hotel_listing_screen.dart';
+import 'package:hotel_reservation_app/screens/provider_registration_screen.dart'; // New import
+import 'package:hotel_reservation_app/screens/provider_requests_screen.dart'; // New import
+import 'package:hotel_reservation_app/screens/provider_status_screen.dart'; // New import
+import 'package:hotel_reservation_app/screens/provider_revenue_screen.dart'; // New import
+import 'package:hotel_reservation_app/screens/provider_service_history_screen.dart'; // New import
+import 'package:hotel_reservation_app/screens/provider_ratings_feedback_screen.dart'; // New import
+import 'package:hotel_reservation_app/screens/provider_chat_screen.dart'; // New import
 
 void main() {
   runApp(const MyApp());
@@ -51,7 +58,14 @@ class MyApp extends StatelessWidget {
         '/settings': (context) => const SettingsScreen(),
         '/support': (context) => const SupportScreen(),
         '/detail_page': (context) => const DetailPage(),
-        '/add_hotel_listing': (context) => const AddHotelListingScreen(), // Route جدید
+        '/add_hotel_listing': (context) => const AddHotelListingScreen(),
+        '/provider_registration': (context) => const ProviderRegistrationScreen(), // New route
+        '/provider_requests': (context) => const ProviderRequestsScreen(), // New route
+        '/provider_status': (context) => const ProviderStatusScreen(), // New route
+        '/provider_revenue': (context) => const ProviderRevenueScreen(), // New route
+        '/provider_service_history': (context) => const ProviderServiceHistoryScreen(), // New route
+        '/provider_ratings_feedback': (context) => const ProviderRatingsFeedbackScreen(), // New route
+        '/provider_chat': (context) => const ProviderChatScreen(), // New route
       },
     );
   }

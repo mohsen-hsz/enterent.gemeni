@@ -41,30 +41,23 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Enter Hotel Details to List', // جزئیات هتل برای لیست شدن
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black87),
-              ),
-              const SizedBox(height: 20),
-
-              // بخش بارگذاری عکس
+              // بخش بارگذاری عکس (شبیه به تصویر ارسالی)
               Center(
                 child: GestureDetector(
                   onTap: () {
                     // TODO: قابلیت واقعی انتخاب عکس از گالری/دوربین
                     print('Image upload area tapped'); // ناحیه بارگذاری عکس لمس شد
-                    // در اینجا می‌توانید یک Image Picker را شبیه‌سازی کنید
                     setState(() {
                       _selectedImagePath = 'assets/images/hotel_placeholder.jpg'; // شبیه‌سازی انتخاب عکس
                     });
                   },
                   child: Container(
-                    width: double.infinity,
-                    height: 180,
+                    width: 120, // اندازه کوچکتر
+                    height: 120, // اندازه کوچکتر
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(color: Colors.grey.shade400, width: 2),
+                      color: Colors.grey.shade200, // رنگ خاکستری روشن
+                      borderRadius: BorderRadius.circular(15), // گوشه‌های گرد
+                      border: Border.all(color: Colors.grey.shade400, width: 2), // حاشیه
                       image: _selectedImagePath != null
                           ? DecorationImage(
                         image: AssetImage(_selectedImagePath!),
@@ -73,26 +66,16 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
                           : null,
                     ),
                     child: _selectedImagePath == null
-                        ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.add_a_photo,
-                          size: 50,
-                          color: Colors.grey.shade600,
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          'Tap to upload hotel image', // برای بارگذاری عکس هتل ضربه بزنید
-                          style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
-                        ),
-                      ],
+                        ? Icon(
+                      Icons.camera_alt,
+                      size: 50,
+                      color: Colors.grey.shade600,
                     )
                         : null, // اگر عکس انتخاب شده باشد، چیزی نمایش نمی‌دهیم
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30), // فاصله بیشتر
 
               // فیلد نام هتل
               TextFormField(
@@ -107,10 +90,27 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
               ),
               const SizedBox(height: 15),
 
-              // فیلد آدرس
+              // فیلد هزینه اتاق هتل (تغییر نام از Price per Night)
+              TextFormField(
+                controller: _pricePerNightController,
+                keyboardType: TextInputType.number,
+                decoration: _buildInputDecoration('Hotel Room Charges', Icons.attach_money), // هزینه اتاق هتل
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter room charges'; // لطفا هزینه اتاق را وارد کنید
+                  }
+                  if (double.tryParse(value) == null || double.parse(value) <= 0) {
+                    return 'Please enter a valid amount'; // لطفا یک مبلغ معتبر وارد کنید
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 15),
+
+              // فیلد آدرس هتل (تغییر نام از Address)
               TextFormField(
                 controller: _addressController,
-                decoration: _buildInputDecoration('Address', Icons.location_on), // آدرس
+                decoration: _buildInputDecoration('Hotel Address', Icons.location_on), // آدرس هتل
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter hotel address'; // لطفا آدرس هتل را وارد کنید
@@ -118,67 +118,67 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 15),
-
-              // فیلد قیمت هر شب
-              TextFormField(
-                controller: _pricePerNightController,
-                keyboardType: TextInputType.number,
-                decoration: _buildInputDecoration('Price per Night (Toman)', Icons.attach_money), // قیمت هر شب (تومان)
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter price per night'; // لطفا قیمت هر شب را وارد کنید
-                  }
-                  if (double.tryParse(value) == null || double.parse(value) <= 0) {
-                    return 'Please enter a valid price'; // لطفا یک قیمت معتبر وارد کنید
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 15),
-
-              // فیلد توضیحات
-              TextFormField(
-                controller: _descriptionController,
-                maxLines: 4,
-                decoration: _buildInputDecoration('Description', Icons.description), // توضیحات
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter hotel description'; // لطفا توضیحات هتل را وارد کنید
-                  }
-                  return null;
-                },
-              ),
               const SizedBox(height: 20),
 
+              // بخش خدمات (Services)
               const Text(
-                'Amenities', // امکانات
+                'What service you want to offer?', // چه خدماتی می‌خواهید ارائه دهید؟
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
               ),
               const SizedBox(height: 10),
-              // چک‌باکس امکانات
-              _buildCheckboxListTile('Wi-Fi', _hasWifi, (bool? value) {
+              // چک‌باکس‌های خدمات با آیکون
+              _buildCheckboxListTile('Wi-Fi', Icons.wifi, _hasWifi, (bool? value) { // آیکون Wi-Fi
                 setState(() { _hasWifi = value ?? false; });
               }),
-              _buildCheckboxListTile('Swimming Pool', _hasPool, (bool? value) {
-                setState(() { _hasPool = value ?? false; });
-              }),
-              _buildCheckboxListTile('Parking', _hasParking, (bool? value) {
-                setState(() { _hasParking = value ?? false; });
-              }),
-              _buildCheckboxListTile('Restaurant', _hasRestaurant, (bool? value) {
-                setState(() { _hasRestaurant = value ?? false; });
-              }),
-              _buildCheckboxListTile('TV', _hasTv, (bool? value) {
+              _buildCheckboxListTile('HDTV', Icons.tv, _hasTv, (bool? value) { // آیکون TV
                 setState(() { _hasTv = value ?? false; });
               }),
-              _buildCheckboxListTile('Kitchen', _hasKitchen, (bool? value) {
+              _buildCheckboxListTile('Swimming Pool', Icons.pool, _hasPool, (bool? value) { // آیکون Pool
+                setState(() { _hasPool = value ?? false; });
+              }),
+              _buildCheckboxListTile('Parking', Icons.local_parking, _hasParking, (bool? value) { // آیکون Parking
+                setState(() { _hasParking = value ?? false; });
+              }),
+              _buildCheckboxListTile('Restaurant', Icons.restaurant, _hasRestaurant, (bool? value) { // آیکون Restaurant
+                setState(() { _hasRestaurant = value ?? false; });
+              }),
+              _buildCheckboxListTile('Kitchen', Icons.kitchen, _hasKitchen, (bool? value) { // آیکون Kitchen
                 setState(() { _hasKitchen = value ?? false; });
               }),
-              _buildCheckboxListTile('Bathroom', _hasBathroom, (bool? value) {
+              _buildCheckboxListTile('Bathroom', Icons.bathroom, _hasBathroom, (bool? value) { // آیکون Bathroom
                 setState(() { _hasBathroom = value ?? false; });
               }),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
+
+              // فیلد توضیحات (Description)
+              const Text(
+                'Hotel Description', // توضیحات هتل
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
+              ),
+              const SizedBox(height: 5),
+              Container(
+                padding: const EdgeInsets.only(left: 20.0),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFececf8),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: TextFormField(
+                  controller: _descriptionController,
+                  maxLines: 6,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Enter About Hotel ...", // درباره هتل وارد کنید
+                    hintStyle: TextStyle(color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.w500),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter hotel description'; // لطفا توضیحات هتل را وارد کنید
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 20.0),
 
               // دکمه ثبت هتل
               Center(
@@ -222,6 +222,7 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
                   child: const Text('Submit Hotel Listing'), // ثبت لیست هتل
                 ),
               ),
+              const SizedBox(height: 30.0),
             ],
           ),
         ),
@@ -242,13 +243,19 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
     );
   }
 
-  // ویجت کمکی برای چک‌باکس‌ها
-  Widget _buildCheckboxListTile(String title, bool value, ValueChanged<bool?> onChanged) {
+  // ویجت کمکی برای چک‌باکس‌ها با آیکون
+  Widget _buildCheckboxListTile(String title, IconData icon, bool value, ValueChanged<bool?> onChanged) {
     return CheckboxListTile(
-      title: Text(title),
+      title: Row( // استفاده از Row برای قرار دادن آیکون و متن کنار هم
+        children: [
+          Icon(icon, color: Colors.blue.shade700, size: 24), // آیکون آبی رنگ
+          const SizedBox(width: 10), // فاصله بین آیکون و متن
+          Text(title),
+        ],
+      ),
       value: value,
       onChanged: onChanged,
-      controlAffinity: ListTileControlAffinity.leading, // آیکون در سمت چپ
+      controlAffinity: ListTileControlAffinity.leading, // چک‌باکس در سمت چپ
       contentPadding: EdgeInsets.zero, // حذف پدینگ اضافی
     );
   }
