@@ -1,9 +1,76 @@
-//File : home_content.dart
-
+// File: screens/home_content.dart
+// This class contains the main content of the Home page
 import 'package:flutter/material.dart';
 
-class HomeContent extends StatelessWidget {
+class HomeContent extends StatefulWidget {
   const HomeContent({super.key});
+
+  @override
+  State<HomeContent> createState() => HomeContentState();
+}
+
+class HomeContentState extends State<HomeContent> {
+  // اطلاعات ساختگی برای هتل‌ها
+  List<Map<String, dynamic>> _hotels = [
+    {
+      'hotelName': 'Hotel Tehran',
+      'image': 'assets/images/hotel1.jpg',
+      'rating': '4.5',
+      'price': '250 Toman',
+      'location': 'Tehran, Iran',
+      'description': 'A luxurious hotel in the heart of Tehran with modern amenities.', // توضیحات اضافه شد
+      'amenities': {
+        'wifi': true,
+        'pool': true,
+        'parking': false,
+        'restaurant': true,
+        'tv': true, // اضافه شد
+        'kitchen': true, // اضافه شد
+        'bathroom': true, // اضافه شد
+      },
+    },
+    {
+      'hotelName': 'Hotel Shiraz',
+      'image': 'assets/images/hotel2.jpg',
+      'rating': '4.5',
+      'price': '250 Toman',
+      'location': 'Shiraz, Iran',
+      'description': 'Experience the rich culture of Shiraz in this traditional yet comfortable hotel.', // توضیحات اضافه شد
+      'amenities': {
+        'wifi': true,
+        'pool': false,
+        'parking': true,
+        'restaurant': true,
+        'tv': true, // اضافه شد
+        'kitchen': false, // اضافه شد
+        'bathroom': true, // اضافه شد
+      },
+    },
+    {
+      'hotelName': 'Hotel Esfahan',
+      'image': 'assets/images/hotel3.jpg',
+      'rating': '4.5',
+      'price': '250 Toman',
+      'location': 'Isfahan, Iran',
+      'description': 'A beautiful hotel near historical sites, offering a blend of tradition and comfort.', // توضیحات اضافه شد
+      'amenities': {
+        'wifi': true,
+        'pool': true,
+        'parking': true,
+        'restaurant': false,
+        'tv': true, // اضافه شد
+        'kitchen': true, // اضافه شد
+        'bathroom': true, // اضافه شد
+      },
+    },
+  ];
+
+  // متدی برای اضافه کردن هتل جدید به لیست
+  void addHotel(Map<String, dynamic> newHotel) {
+    setState(() {
+      _hotels.add(newHotel);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +117,7 @@ class HomeContent extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
-              'Suggested Hotels', // هتل‌های پیشنهادی
+              'Hotels', // هتل‌ها
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -61,16 +128,17 @@ class HomeContent extends StatelessWidget {
           const SizedBox(height: 15),
           SizedBox(
             height: 200,
-            child: ListView(
+            child: ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              children: [
-                _buildHotelCard(context,'Hotel Tehran', 'assets/images/hotel1.jpg'), 
-                const SizedBox(width: 15),
-                _buildHotelCard(context,'Hotel Shiraz', 'assets/images/hotel2.jpg'), 
-                const SizedBox(width: 15),
-                _buildHotelCard(context,'Hotel Esfahan', 'assets/images/hotel3.jpg'), 
-              ],
+              itemCount: _hotels.length,
+              itemBuilder: (context, index) {
+                final hotel = _hotels[index];
+                return Padding(
+                  padding: const EdgeInsets.only(right: 15.0),
+                  child: _buildHotelCard(context, hotel), // ارسال کل Map هتل
+                );
+              },
             ),
           ),
           const SizedBox(height: 20),
@@ -108,16 +176,14 @@ class HomeContent extends StatelessWidget {
     );
   }
 
-   Widget _buildHotelCard(BuildContext context, String title, String imagePath) {
+  // تغییر پارامتر به Map<String, dynamic> hotelData
+  Widget _buildHotelCard(BuildContext context, Map<String, dynamic> hotelData) {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
           context,
           '/detail_page',
-          arguments: {
-            'title': title,
-            'imagePath': imagePath,
-          },
+          arguments: hotelData, // ارسال کل اطلاعات هتل
         );
       },
       child: Container(
@@ -140,7 +206,7 @@ class HomeContent extends StatelessWidget {
             ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
               child: Image.asset(
-                imagePath,
+                hotelData['image'], // استفاده از image از hotelData
                 height: 120,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -149,7 +215,7 @@ class HomeContent extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                title,
+                hotelData['hotelName'], // استفاده از hotelName از hotelData
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
@@ -158,10 +224,10 @@ class HomeContent extends StatelessWidget {
               child: Row(
                 children: [
                   Icon(Icons.star, color: Colors.amber.shade700, size: 18),
-                  const Text('4.5'),
+                  Text(hotelData['rating']), // استفاده از rating از hotelData
                   const Spacer(),
                   Text(
-                    'Az 250 Toman',
+                    hotelData['price'], // استفاده از price از hotelData
                     style: TextStyle(
                       color: Colors.blue.shade700,
                       fontWeight: FontWeight.bold,

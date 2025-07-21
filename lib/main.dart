@@ -12,10 +12,11 @@ import 'package:hotel_reservation_app/screens/profile_screen.dart';
 import 'package:hotel_reservation_app/screens/reservations_screen.dart';
 import 'package:hotel_reservation_app/screens/reservation_history_screen.dart';
 import 'package:hotel_reservation_app/screens/my_wallet_screen.dart';
-import 'package:hotel_reservation_app/screens/personal_info_screen.dart'; 
-import 'package:hotel_reservation_app/screens/change_password_screen.dart'; 
-import 'package:hotel_reservation_app/screens/settings_screen.dart'; 
-import 'package:hotel_reservation_app/screens/support_screen.dart'; 
+import 'package:hotel_reservation_app/screens/personal_info_screen.dart';
+import 'package:hotel_reservation_app/screens/change_password_screen.dart';
+import 'package:hotel_reservation_app/screens/settings_screen.dart';
+import 'package:hotel_reservation_app/screens/support_screen.dart';
+import 'package:hotel_reservation_app/screens/add_hotel_listing_screen.dart'; // Import جدید
 
 void main() {
   runApp(const MyApp());
@@ -45,11 +46,12 @@ class MyApp extends StatelessWidget {
         '/reservations': (context) => const ReservationsScreen(),
         '/reservation_history': (context) => const ReservationHistoryScreen(),
         '/my_wallet': (context) => const MyWalletScreen(),
-        '/personal_info': (context) => const PersonalInfoScreen(), 
-        '/change_password': (context) => const ChangePasswordScreen(), 
-        '/settings': (context) => const SettingsScreen(), 
+        '/personal_info': (context) => const PersonalInfoScreen(),
+        '/change_password': (context) => const ChangePasswordScreen(),
+        '/settings': (context) => const SettingsScreen(),
         '/support': (context) => const SupportScreen(),
-        '/detail_page': (context) => const DetailPage(), 
+        '/detail_page': (context) => const DetailPage(),
+        '/add_hotel_listing': (context) => const AddHotelListingScreen(), // Route جدید
       },
     );
   }
