@@ -1,3 +1,5 @@
+//File : home_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:hotel_reservation_app/screens/profile_screen.dart';
 import 'package:hotel_reservation_app/screens/reservations_screen.dart';
@@ -49,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundImage: Image.asset('assets/images/boy.png').image, // تصویر پروفایل کاربر
+                    backgroundImage: Image.asset('assets/images/boy.jpg').image, // تصویر پروفایل کاربر
                   ),
                   const SizedBox(height: 10),
                   const Text(

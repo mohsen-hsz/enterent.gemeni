@@ -1,3 +1,6 @@
+
+//File: admin_panel_screen.dart
+
 import 'package:flutter/material.dart';
 
 class AdminPanelScreen extends StatelessWidget {

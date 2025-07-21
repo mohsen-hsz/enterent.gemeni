@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 
 class ReservationHistoryScreen extends StatelessWidget {
@@ -34,7 +36,7 @@ class ReservationHistoryScreen extends StatelessWidget {
     },
     {
       'hotelName': 'Bali Beach Resort',
-      'image': 'assets/images/bali.png',
+      'image': 'assets/images/bali.jpg',
       'checkIn': '2022-03-10',
       'checkOut': '2022-03-17',
       'price': '5,000,000 Toman',

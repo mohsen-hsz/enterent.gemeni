@@ -1,3 +1,5 @@
+//File : hotel_datail.dart
+
 import "package:hotel_reservation_app/screens/support2.dart";
 import "package:flutter/material.dart";
 

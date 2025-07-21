@@ -1,4 +1,4 @@
-// File: screens/change_password_screen.dart
+// File: change_password_screen.dart
 import 'package:flutter/material.dart';
 
 class ChangePasswordScreen extends StatelessWidget {

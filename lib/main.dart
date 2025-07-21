@@ -1,5 +1,7 @@
 // File: main.dart
+
 import 'package:flutter/material.dart';
+import 'package:hotel_reservation_app/screens/detail_page.dart';
 import 'package:hotel_reservation_app/screens/login_screen.dart';
 import 'package:hotel_reservation_app/screens/signup_screen.dart';
 import 'package:hotel_reservation_app/screens/home_screen.dart';
@@ -10,10 +12,10 @@ import 'package:hotel_reservation_app/screens/profile_screen.dart';
 import 'package:hotel_reservation_app/screens/reservations_screen.dart';
 import 'package:hotel_reservation_app/screens/reservation_history_screen.dart';
 import 'package:hotel_reservation_app/screens/my_wallet_screen.dart';
-import 'package:hotel_reservation_app/screens/personal_info_screen.dart'; // New import
-import 'package:hotel_reservation_app/screens/change_password_screen.dart'; // New import
-import 'package:hotel_reservation_app/screens/settings_screen.dart'; // New import
-import 'package:hotel_reservation_app/screens/support_screen.dart'; // New import
+import 'package:hotel_reservation_app/screens/personal_info_screen.dart'; 
+import 'package:hotel_reservation_app/screens/change_password_screen.dart'; 
+import 'package:hotel_reservation_app/screens/settings_screen.dart'; 
+import 'package:hotel_reservation_app/screens/support_screen.dart'; 
 
 void main() {
   runApp(const MyApp());
@@ -26,6 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Hotel Reservation App', // اپلیکیشن رزرو هتل
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: 'Inter', // فونت Inter را استفاده می‌کنیم
@@ -42,10 +45,11 @@ class MyApp extends StatelessWidget {
         '/reservations': (context) => const ReservationsScreen(),
         '/reservation_history': (context) => const ReservationHistoryScreen(),
         '/my_wallet': (context) => const MyWalletScreen(),
-        '/personal_info': (context) => const PersonalInfoScreen(), // New route
-        '/change_password': (context) => const ChangePasswordScreen(), // New route
-        '/settings': (context) => const SettingsScreen(), // New route
-        '/support': (context) => const SupportScreen(), // New route
+        '/personal_info': (context) => const PersonalInfoScreen(), 
+        '/change_password': (context) => const ChangePasswordScreen(), 
+        '/settings': (context) => const SettingsScreen(), 
+        '/support': (context) => const SupportScreen(),
+        '/detail_page': (context) => const DetailPage(), 
       },
     );
   }

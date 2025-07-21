@@ -1,3 +1,5 @@
+//File : home_content.dart
+
 import 'package:flutter/material.dart';
 
 class HomeContent extends StatelessWidget {
@@ -63,11 +65,11 @@ class HomeContent extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               children: [
-                _buildHotelCard('Hotel Tehran', 'assets/images/hotel1.jpg'), // Hotel 1
+                _buildHotelCard(context,'Hotel Tehran', 'assets/images/hotel1.jpg'), 
                 const SizedBox(width: 15),
-                _buildHotelCard('Hotel Shiraz', 'assets/images/hotel2.jpg'), // Hotel 2
+                _buildHotelCard(context,'Hotel Shiraz', 'assets/images/hotel2.jpg'), 
                 const SizedBox(width: 15),
-                _buildHotelCard('Hotel Esfahan', 'assets/images/hotel3.jpg'), // Hotel 3
+                _buildHotelCard(context,'Hotel Esfahan', 'assets/images/hotel3.jpg'), 
               ],
             ),
           ),
@@ -90,7 +92,7 @@ class HomeContent extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               children: [
-                _buildDestinationCard('Bali', 'assets/images/bali.png'), // Bali
+                _buildDestinationCard('Bali', 'assets/images/bali.jpg'), // Bali
                 const SizedBox(width: 15),
                 _buildDestinationCard('Dubai', 'assets/images/dubai.jpg'), // Dubai
                 const SizedBox(width: 15),
@@ -106,58 +108,70 @@ class HomeContent extends StatelessWidget {
     );
   }
 
-  Widget _buildHotelCard(String title, String imagePath) {
-    return Container(
-      width: 180,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-            child: Image.asset(
-              imagePath,
-              height: 120,
-              width: double.infinity,
-              fit: BoxFit.cover,
+   Widget _buildHotelCard(BuildContext context, String title, String imagePath) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          '/detail_page',
+          arguments: {
+            'title': title,
+            'imagePath': imagePath,
+          },
+        );
+      },
+      child: Container(
+        width: 180,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+              child: Image.asset(
+                imagePath,
+                height: 120,
+                width: double.infinity,
+                fit: BoxFit.cover,
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              children: [
-                Icon(Icons.star, color: Colors.amber.shade700, size: 18),
-                const Text('4.5'),
-                const Spacer(),
-                Text(
-                  'From 250 Toman', // از 250 تومان
-                  style: TextStyle(color: Colors.blue.shade700, fontWeight: FontWeight.bold),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                title,
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                children: [
+                  Icon(Icons.star, color: Colors.amber.shade700, size: 18),
+                  const Text('4.5'),
+                  const Spacer(),
+                  Text(
+                    'Az 250 Toman',
+                    style: TextStyle(
+                      color: Colors.blue.shade700,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,3 +1,5 @@
+//File : profile_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:hotel_reservation_app/screens/personal_info_screen.dart'; // Import for Personal Information
 import 'package:hotel_reservation_app/screens/change_password_screen.dart'; // Import for Change Password
@@ -24,7 +26,7 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 70,
-                  backgroundImage: Image.asset('assets/images/boy.png').image, // تصویر پروفایل
+                  backgroundImage: Image.asset('assets/images/boy.jpg').image, // تصویر پروفایل
                 ),
                 Positioned(
                   bottom: 0,

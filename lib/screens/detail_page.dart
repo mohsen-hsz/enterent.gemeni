@@ -1,5 +1,9 @@
+//File : detail_page.dart
+
 import 'package:hotel_reservation_app/screens/support2.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
+
 
 class DetailPage extends StatefulWidget {
   const DetailPage({super.key});
@@ -18,41 +22,32 @@ class _DetailPageState extends State<DetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height / 2.5,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(50),
-                        bottomRight: Radius.circular(50),
-                      ),
-                      child: Image.asset(
-                        "assets/images/hotel1.jpg",
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      margin: EdgeInsets.only(top: 50.0, left: 20.0),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(60),
-                      ),
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 30.0,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+  children: [
+    SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 2.5,
+      child: _ImageSlider(), // ویجت اسلایدشو
+    ),
+    GestureDetector(
+      onTap: () {
+        Navigator.pop(context);
+      },
+      child: Container(
+        padding: EdgeInsets.all(5),
+        margin: EdgeInsets.only(top: 50.0, left: 20.0),
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(60),
+        ),
+        child: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+          size: 30.0,
+        ),
+      ),
+    ),
+  ],
+),
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                 child: Column(
@@ -60,7 +55,7 @@ class _DetailPageState extends State<DetailPage> {
                   children: [
                     SizedBox(height: 20.0),
                     Text("Hotel Beach", style: Appwidget.headlinetextstyle(28.0)),
-                    Text("\$20", style: Appwidget.normaltextstyle(28.0)),
+                    Text("From 250 Toman", style: Appwidget.normaltextstyle(28.0)),
                     Divider(thickness: 2.0),
                     SizedBox(height: 10.0),
                     Text(
@@ -215,3 +210,68 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 }
+
+class _ImageSlider extends StatefulWidget {
+  @override
+  State<_ImageSlider> createState() => _ImageSliderState();
+}
+
+class _ImageSliderState extends State<_ImageSlider> {
+  final PageController _controller = PageController();
+  int _currentPage = 0;
+  final List<String> _images = [
+    'assets/images/hotel1.jpg',
+    'assets/images/hotel2.jpg',
+    'assets/images/hotel3.jpg',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      Timer.periodic(const Duration(seconds: 3), (Timer timer) {
+        if (_currentPage < _images.length - 1) {
+          _currentPage++;
+        } else {
+          _currentPage = 0;
+        }
+
+        if (_controller.hasClients) {
+          _controller.animateToPage(
+            _currentPage,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        bottomLeft: Radius.circular(50),
+        bottomRight: Radius.circular(50),
+      ),
+      child: PageView.builder(
+        controller: _controller,
+        itemCount: _images.length,
+        itemBuilder: (context, index) {
+          return Image.asset(
+            _images[index],
+            fit: BoxFit.cover,
+            width: double.infinity,
+          );
+        },
+      ),
+    );
+  }
+}
+
