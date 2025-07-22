@@ -1,4 +1,4 @@
-// File: screens/home_screen.dart
+// File: screens/traveler_home_screen.dart
 
 import 'package:flutter/material.dart';
 import 'package:hotel_reservation_app/screens/profile_screen.dart';
@@ -6,20 +6,19 @@ import 'package:hotel_reservation_app/screens/reservations_screen.dart';
 import 'package:hotel_reservation_app/screens/home_content.dart';
 import 'package:hotel_reservation_app/screens/reservation_history_screen.dart';
 import 'package:hotel_reservation_app/screens/my_wallet_screen.dart';
-import 'package:hotel_reservation_app/screens/add_hotel_listing_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class TravelerHomeScreen extends StatefulWidget { // تغییر نام کلاس
+  const TravelerHomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<TravelerHomeScreen> createState() => _TravelerHomeScreenState(); // تغییر نام State
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _TravelerHomeScreenState extends State<TravelerHomeScreen> { // تغییر نام State
   int _selectedIndex = 0; // Index for bottom navigation bar
 
-  // یک GlobalKey برای دسترسی به State مربوط به HomeContent
-  final GlobalKey<HomeContentState> _homeContentKey = GlobalKey<HomeContentState>(); // نام کلاس به HomeContentState تغییر یافت
+  // یک GlobalKey برای دسترسی به State مربوط به HomeContent (برای رفرش هتل‌ها)
+  final GlobalKey<HomeContentState> _homeContentKey = GlobalKey<HomeContentState>();
 
   // لیست ویجت‌ها برای نمایش در هر تب نوار پایین
   late final List<Widget> _widgetOptions;
@@ -44,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page', style: TextStyle(color: Colors.white)), // صفحه اصلی
+        title: const Text('Home Page (Traveler)', style: TextStyle(color: Colors.white)), // صفحه اصلی (مسافر)
         backgroundColor: Colors.blue.shade700,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -65,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    'Hello, User!', // سلام، کاربر!
+                    'Hello, Traveler!', // سلام، مسافر!
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -111,21 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.admin_panel_settings, color: Colors.blue),
               title: const Text('Management Panel'), // پنل مدیریت
               onTap: () {
-                Navigator.pushNamed(context, '/admin_panel');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.business_center, color: Colors.blue),
-              title: const Text('Service Provider Panel'), // پنل سرویس دهنده
-              onTap: () {
-                Navigator.pushNamed(context, '/service_provider_panel');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person_pin, color: Colors.blue),
-              title: const Text('Service Consumer Panel'), // پنل سرویس گیرنده
-              onTap: () {
-                Navigator.pushNamed(context, '/service_consumer_panel');
+                Navigator.pushNamed(context, '/management_panel'); // مسیر جدید برای پنل مدیریت مشترک
               },
             ),
             const Divider(),
@@ -160,25 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped, // Handle bottom navigation tap
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          print('Add new hotel listing FAB pressed'); // برای دیباگ: کلیک روی دکمه اضافه کردن هتل جدید
-          // به صفحه اضافه کردن هتل جدید می‌رویم و منتظر نتیجه می‌مانیم
-          final newHotel = await Navigator.pushNamed(context, '/add_hotel_listing');
-          if (newHotel != null && newHotel is Map<String, dynamic>) {
-            // اگر هتل جدیدی برگشت، آن را به لیست هتل‌ها در HomeContent اضافه می‌کنیم
-            _homeContentKey.currentState?.addHotel(newHotel);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('New hotel added: ${newHotel['hotelName']}')),
-            );
-          }
-        },
-        backgroundColor: Colors.grey.shade700, // رنگ خاکستری
-        foregroundColor: Colors.white,
-        shape: const CircleBorder(), // دایره‌ای کردن دکمه
-        child: const Icon(Icons.add, size: 36), // آیکون + بزرگ
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startDocked, // قرار دادن دکمه در سمت چپ پایین
+      // FloatingActionButton از اینجا حذف شده است
     );
   }
 }

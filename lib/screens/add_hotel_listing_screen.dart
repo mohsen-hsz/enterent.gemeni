@@ -127,25 +127,25 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
               ),
               const SizedBox(height: 10),
               // چک‌باکس‌های خدمات با آیکون
-              _buildCheckboxListTile('Wi-Fi', Icons.wifi, _hasWifi, (bool? value) { // آیکون Wi-Fi
+              _buildCheckboxListTile('Wi-Fi', Icons.wifi, _hasWifi, (bool? value) {
                 setState(() { _hasWifi = value ?? false; });
               }),
-              _buildCheckboxListTile('HDTV', Icons.tv, _hasTv, (bool? value) { // آیکون TV
+              _buildCheckboxListTile('HDTV', Icons.tv, _hasTv, (bool? value) {
                 setState(() { _hasTv = value ?? false; });
               }),
-              _buildCheckboxListTile('Swimming Pool', Icons.pool, _hasPool, (bool? value) { // آیکون Pool
+              _buildCheckboxListTile('Swimming Pool', Icons.pool, _hasPool, (bool? value) {
                 setState(() { _hasPool = value ?? false; });
               }),
-              _buildCheckboxListTile('Parking', Icons.local_parking, _hasParking, (bool? value) { // آیکون Parking
+              _buildCheckboxListTile('Parking', Icons.local_parking, _hasParking, (bool? value) {
                 setState(() { _hasParking = value ?? false; });
               }),
-              _buildCheckboxListTile('Restaurant', Icons.restaurant, _hasRestaurant, (bool? value) { // آیکون Restaurant
+              _buildCheckboxListTile('Restaurant', Icons.restaurant, _hasRestaurant, (bool? value) {
                 setState(() { _hasRestaurant = value ?? false; });
               }),
-              _buildCheckboxListTile('Kitchen', Icons.kitchen, _hasKitchen, (bool? value) { // آیکون Kitchen
+              _buildCheckboxListTile('Kitchen', Icons.kitchen, _hasKitchen, (bool? value) {
                 setState(() { _hasKitchen = value ?? false; });
               }),
-              _buildCheckboxListTile('Bathroom', Icons.bathroom, _hasBathroom, (bool? value) { // آیکون Bathroom
+              _buildCheckboxListTile('Bathroom', Icons.bathroom, _hasBathroom, (bool? value) {
                 setState(() { _hasBathroom = value ?? false; });
               }),
               const SizedBox(height: 20),
@@ -205,7 +205,7 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
                       };
 
                       // بازگرداندن اطلاعات هتل جدید به صفحه قبلی
-                      Navigator.pop(context, newHotel);
+                      Navigator.pop(context, newHotel); // به صفحه قبلی (HotelierHomeScreen) بازمی‌گردیم
 
                       // نمایش پیام موفقیت (این پیام در صفحه اصلی نمایش داده می‌شود)
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -246,7 +246,7 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
   // ویجت کمکی برای چک‌باکس‌ها با آیکون
   Widget _buildCheckboxListTile(String title, IconData icon, bool value, ValueChanged<bool?> onChanged) {
     return CheckboxListTile(
-      title: Row( // استفاده از Row برای قرار دادن آیکون و متن کنار هم
+      title: Row(
         children: [
           Icon(icon, color: Colors.blue.shade700, size: 24), // آیکون آبی رنگ
           const SizedBox(width: 10), // فاصله بین آیکون و متن

@@ -1,4 +1,4 @@
-//File : signup_screen.dart
+// File: screens/signup_screen.dart
 
 import 'package:flutter/material.dart';
 
@@ -98,7 +98,8 @@ class _SignupState extends State<Signup> {
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          Navigator.pushReplacementNamed(context, '/home');
+                          // به صفحه انتخاب نقش هدایت می‌شویم
+                          Navigator.pushReplacementNamed(context, '/role_selection');
                         } else {
                           // خطاهای ولیدیشن به طور خودکار نشان داده می‌شوند
                         }
@@ -120,6 +121,7 @@ class _SignupState extends State<Signup> {
                     const SizedBox(height: 20),
                     TextButton(
                       onPressed: () {
+                        // به صفحه ورود برمی‌گردیم
                         Navigator.pop(context);
                       },
                       child: Text(

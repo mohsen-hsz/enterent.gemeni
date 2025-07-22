@@ -1,75 +1,89 @@
 // File: screens/home_content.dart
-// This class contains the main content of the Home page
+// This class contains the main content of the Home page for Travelers
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Import جدید
+import 'dart:convert'; // برای تبدیل به JSON
 
 class HomeContent extends StatefulWidget {
   const HomeContent({super.key});
 
   @override
-  State<HomeContent> createState() => HomeContentState();
+  State<HomeContent> createState() => HomeContentState(); // نام کلاس به HomeContentState تغییر یافت
 }
 
-class HomeContentState extends State<HomeContent> {
-  // اطلاعات ساختگی برای هتل‌ها
-  List<Map<String, dynamic>> _hotels = [
-    {
-      'hotelName': 'Hotel Tehran',
-      'image': 'assets/images/hotel1.jpg',
-      'rating': '4.5',
-      'price': '250 Toman',
-      'location': 'Tehran, Iran',
-      'description': 'A luxurious hotel in the heart of Tehran with modern amenities.', // توضیحات اضافه شد
-      'amenities': {
-        'wifi': true,
-        'pool': true,
-        'parking': false,
-        'restaurant': true,
-        'tv': true, // اضافه شد
-        'kitchen': true, // اضافه شد
-        'bathroom': true, // اضافه شد
-      },
-    },
-    {
-      'hotelName': 'Hotel Shiraz',
-      'image': 'assets/images/hotel2.jpg',
-      'rating': '4.5',
-      'price': '250 Toman',
-      'location': 'Shiraz, Iran',
-      'description': 'Experience the rich culture of Shiraz in this traditional yet comfortable hotel.', // توضیحات اضافه شد
-      'amenities': {
-        'wifi': true,
-        'pool': false,
-        'parking': true,
-        'restaurant': true,
-        'tv': true, // اضافه شد
-        'kitchen': false, // اضافه شد
-        'bathroom': true, // اضافه شد
-      },
-    },
-    {
-      'hotelName': 'Hotel Esfahan',
-      'image': 'assets/images/hotel3.jpg',
-      'rating': '4.5',
-      'price': '250 Toman',
-      'location': 'Isfahan, Iran',
-      'description': 'A beautiful hotel near historical sites, offering a blend of tradition and comfort.', // توضیحات اضافه شد
-      'amenities': {
-        'wifi': true,
-        'pool': true,
-        'parking': true,
-        'restaurant': false,
-        'tv': true, // اضافه شد
-        'kitchen': true, // اضافه شد
-        'bathroom': true, // اضافه شد
-      },
-    },
-  ];
+class HomeContentState extends State<HomeContent> { // نام کلاس به HomeContentState تغییر یافت
+  // اطلاعات ساختگی برای هتل‌ها (اینها هتل‌های عمومی هستند که همه می‌بینند)
+  List<Map<String, dynamic>> _hotels = []; // لیست اولیه خالی است، از SharedPreferences بارگذاری می‌شود
+
+  @override
+  void initState() {
+    super.initState();
+    _loadHotels(); // بارگذاری هتل‌ها هنگام شروع
+  }
+
+  // تابع برای بارگذاری هتل‌ها از SharedPreferences
+  Future<void> _loadHotels() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? hotelsString = prefs.getString('all_hotels');
+    if (hotelsString != null) {
+      setState(() {
+        _hotels = (jsonDecode(hotelsString) as List)
+            .map((item) => item as Map<String, dynamic>)
+            .toList();
+      });
+    } else {
+      // اگر هیچ هتلی ذخیره نشده بود، هتل‌های پیش‌فرض را اضافه می‌کنیم
+      _hotels = [
+        {
+          'hotelName': 'Hotel Tehran',
+          'image': 'assets/images/hotel1.jpg',
+          'rating': '4.5',
+          'price': '250 Toman',
+          'location': 'Tehran, Iran',
+          'description': 'A luxurious hotel in the heart of Tehran with modern amenities.', // توضیحات اضافه شد
+          'amenities': {
+            'wifi': true, 'pool': true, 'parking': false, 'restaurant': true, 'tv': true, 'kitchen': true, 'bathroom': true,
+          },
+        },
+        {
+          'hotelName': 'Hotel Shiraz',
+          'image': 'assets/images/hotel2.jpg',
+          'rating': '4.5',
+          'price': '250 Toman',
+          'location': 'Shiraz, Iran',
+          'description': 'Experience the rich culture of Shiraz in this traditional yet comfortable hotel.', // توضیحات اضافه شد
+          'amenities': {
+            'wifi': true, 'pool': false, 'parking': true, 'restaurant': true, 'tv': true, 'kitchen': false, 'bathroom': true,
+          },
+        },
+        {
+          'hotelName': 'Hotel Esfahan',
+          'image': 'assets/images/hotel3.jpg',
+          'rating': '4.5',
+          'price': '250 Toman',
+          'location': 'Isfahan, Iran',
+          'description': 'A beautiful hotel near historical sites, offering a blend of tradition and comfort.', // توضیحات اضافه شد
+          'amenities': {
+            'wifi': true, 'pool': true, 'parking': true, 'restaurant': false, 'tv': true, 'kitchen': true, 'bathroom': true,
+          },
+        },
+      ];
+      _saveHotels(); // هتل‌های پیش‌فرض را ذخیره می‌کنیم
+    }
+  }
+
+  // تابع برای ذخیره هتل‌ها در SharedPreferences
+  Future<void> _saveHotels() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('all_hotels', jsonEncode(_hotels));
+  }
 
   // متدی برای اضافه کردن هتل جدید به لیست
   void addHotel(Map<String, dynamic> newHotel) {
     setState(() {
       _hotels.add(newHotel);
     });
+    _saveHotels(); // ذخیره لیست به‌روز شده
   }
 
   @override
@@ -210,6 +224,14 @@ class HomeContentState extends State<HomeContent> {
                 height: 120,
                 width: double.infinity,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) { // اضافه کردن errorBuilder برای تصاویر نامعتبر
+                  return Image.asset(
+                    'assets/images/hotel_placeholder.jpg', // تصویر پیش‌فرض در صورت خطا
+                    height: 120,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  );
+                },
               ),
             ),
             Padding(

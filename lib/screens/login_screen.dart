@@ -1,4 +1,4 @@
-//File : login_screen.dart
+// File: screens/login_screen.dart
 
 import 'package:flutter/material.dart';
 
@@ -75,7 +75,8 @@ class _LoginState extends State<Login> {
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          Navigator.pushReplacementNamed(context, '/home');
+                          // به صفحه انتخاب نقش هدایت می‌شویم
+                          Navigator.pushReplacementNamed(context, '/role_selection');
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -90,13 +91,13 @@ class _LoginState extends State<Login> {
                       ),
                       child: const Text(
                         'Login',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
                     const SizedBox(height: 20),
                     TextButton(
                       onPressed: () {
+                        // به صفحه ثبت‌نام هدایت می‌شویم
                         Navigator.pushNamed(context, '/signup');
                       },
                       child: Text(
