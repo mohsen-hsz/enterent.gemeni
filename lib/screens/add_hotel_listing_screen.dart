@@ -1,5 +1,6 @@
 // File: screens/add_hotel_listing_screen.dart
 import 'package:flutter/material.dart';
+import 'package:hotel_reservation_app/services/api_service.dart'; // Import ApiService
 
 class AddHotelListingScreen extends StatefulWidget {
   const AddHotelListingScreen({super.key});
@@ -25,6 +26,9 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
   bool _hasTv = false; // امکانات: تلویزیون
   bool _hasKitchen = false; // امکانات: آشپزخانه
   bool _hasBathroom = false; // امکانات: حمام
+
+  // برای مدیریت وضعیت بارگذاری
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -181,36 +185,79 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
               const SizedBox(height: 20.0),
 
               // دکمه ثبت هتل
-              Center(
+              _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : Center(
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      // ساخت یک Map از اطلاعات کامل هتل جدید
-                      final newHotel = {
-                        'hotelName': _hotelNameController.text,
-                        'image': _selectedImagePath ?? 'assets/images/hotel_placeholder.jpg', // استفاده از تصویر انتخاب شده
-                        'rating': 'New', // می‌توانید منطق امتیازدهی اضافه کنید
-                        'price': '${_pricePerNightController.text} Toman',
-                        'location': _addressController.text,
-                        'description': _descriptionController.text,
-                        'amenities': {
-                          'wifi': _hasWifi,
-                          'pool': _hasPool,
-                          'parking': _hasParking,
-                          'restaurant': _hasRestaurant,
-                          'tv': _hasTv,
-                          'kitchen': _hasKitchen,
-                          'bathroom': _hasBathroom,
-                        },
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      // ساخت یک Map از اطلاعات کامل هتل جدید برای ارسال به API
+                      final int? ownerId = await ApiService.getUserId(); // دریافت owner_id کاربر لاگین شده
+
+                      if (ownerId == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Error: User not logged in or owner ID not found.')), // خطا: کاربر وارد نشده یا owner ID یافت نشد.
+                        );
+                        setState(() { _isLoading = false; });
+                        return;
+                      }
+
+                      final hotelDataForApi = {
+                        'name': _hotelNameController.text,
+                        'province_id': 18, // TODO: اینها باید از API config دریافت شوند
+                        'city_id': 70, // TODO: اینها باید از API config دریافت شوند
+                        'price_per_day': int.tryParse(_pricePerNightController.text) ?? 0,
+                        'address': _addressController.text,
+                        'owner_id': ownerId, // استفاده از owner_id واقعی
+                        // 'specifications': { // اگر بک‌اند فیلد specifications را می‌پذیرد
+                        //   'description': _descriptionController.text,
+                        //   'amenities': {
+                        //     'wifi': _hasWifi, 'pool': _hasPool, 'parking': _hasParking,
+                        //     'restaurant': _hasRestaurant, 'tv': _hasTv, 'kitchen': _hasKitchen, 'bathroom': _hasBathroom,
+                        //   },
+                        // },
+                        // توجه: API شما فیلدهای description و amenities را مستقیماً در create accommodations ندارد.
+                        // در یک پروژه واقعی، باید API را به‌روزرسانی کنید یا این فیلدها را در 'specifications' قرار دهید.
                       };
 
-                      // بازگرداندن اطلاعات هتل جدید به صفحه قبلی
-                      Navigator.pop(context, newHotel); // به صفحه قبلی (HotelierHomeScreen) بازمی‌گردیم
-
-                      // نمایش پیام موفقیت (این پیام در صفحه اصلی نمایش داده می‌شود)
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Hotel listing submitted successfully!')), // لیست هتل با موفقیت ثبت شد!
-                      );
+                      try {
+                        final response = await ApiService.createAccommodation(hotelDataForApi);
+                        if (response['status'] == 'success' || response['id'] != null) {
+                          // ساخت یک Map از اطلاعات کامل هتل جدید برای بازگشت به صفحه قبلی
+                          // این شامل اطلاعاتی است که در UI فرانت‌اند نمایش داده می‌شود.
+                          final newHotel = {
+                            'hotelName': _hotelNameController.text,
+                            'image': _selectedImagePath ?? 'assets/images/hotel_placeholder.jpg',
+                            'rating': 'New',
+                            'price': '${_pricePerNightController.text} Toman',
+                            'location': _addressController.text,
+                            'description': _descriptionController.text,
+                            'amenities': {
+                              'wifi': _hasWifi, 'pool': _hasPool, 'parking': _hasParking,
+                              'restaurant': _hasRestaurant, 'tv': _hasTv, 'kitchen': _hasKitchen, 'bathroom': _hasBathroom,
+                            },
+                          };
+                          Navigator.pop(context, newHotel);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Hotel listing submitted successfully!')),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Failed to submit hotel: ${response['message'] ?? 'Unknown error'}')),
+                          );
+                        }
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Error submitting hotel: $e')),
+                        );
+                      } finally {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(

@@ -6,15 +6,16 @@ import 'package:hotel_reservation_app/screens/reservations_screen.dart';
 import 'package:hotel_reservation_app/screens/home_content.dart';
 import 'package:hotel_reservation_app/screens/reservation_history_screen.dart';
 import 'package:hotel_reservation_app/screens/my_wallet_screen.dart';
+import 'package:hotel_reservation_app/services/api_service.dart'; // برای logout
 
-class TravelerHomeScreen extends StatefulWidget { // تغییر نام کلاس
+class TravelerHomeScreen extends StatefulWidget {
   const TravelerHomeScreen({super.key});
 
   @override
-  State<TravelerHomeScreen> createState() => _TravelerHomeScreenState(); // تغییر نام State
+  State<TravelerHomeScreen> createState() => _TravelerHomeScreenState();
 }
 
-class _TravelerHomeScreenState extends State<TravelerHomeScreen> { // تغییر نام State
+class _TravelerHomeScreenState extends State<TravelerHomeScreen> {
   int _selectedIndex = 0; // Index for bottom navigation bar
 
   // یک GlobalKey برای دسترسی به State مربوط به HomeContent (برای رفرش هتل‌ها)
@@ -118,6 +119,7 @@ class _TravelerHomeScreenState extends State<TravelerHomeScreen> { // تغییر
               leading: const Icon(Icons.logout, color: Colors.red),
               title: const Text('Logout'), // خروج
               onTap: () {
+                ApiService.deleteTokenAndUserId(); // حذف توکن و User ID هنگام خروج
                 Navigator.pushReplacementNamed(context, '/'); // Return to login page
               },
             ),

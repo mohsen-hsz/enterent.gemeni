@@ -1,5 +1,7 @@
 // File: screens/management_panel_screen.dart
 import 'package:flutter/material.dart';
+import 'package:hotel_reservation_app/screens/user_detail_screen.dart';
+import 'package:hotel_reservation_app/services/api_service.dart'; // Import ApiService
 
 class ManagementPanelScreen extends StatefulWidget {
   const ManagementPanelScreen({super.key});
@@ -9,16 +11,44 @@ class ManagementPanelScreen extends StatefulWidget {
 }
 
 class _ManagementPanelScreenState extends State<ManagementPanelScreen> {
-  // اطلاعات ساختگی کاربران
-  final List<Map<String, dynamic>> _users = [
-    {'id': 'T001', 'name': 'Ali Ahmadi', 'role': 'Traveler', 'status': 'Active'},
-    {'id': 'H001', 'name': 'Mohsen Hosseini', 'role': 'Hotelier', 'status': 'Active'},
-    {'id': 'T002', 'name': 'Sara Karimi', 'role': 'Traveler', 'status': 'Active'},
-    {'id': 'H002', 'name': 'Reza Nazari', 'role': 'Hotelier', 'status': 'Inactive'},
-    {'id': 'T003', 'name': 'Narges Abbasi', 'role': 'Traveler', 'status': 'Blocked'},
-  ];
+  List<Map<String, dynamic>> _users = []; // لیست کاربران
+  bool _isLoading = true; // برای نمایش وضعیت بارگذاری
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUsers(); // دریافت کاربران هنگام شروع
+  }
+
+  // تابع برای دریافت کاربران از API
+  Future<void> _fetchUsers() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final apiUsers = await ApiService.getUsers();
+      setState(() {
+        _users = apiUsers.map((user) => {
+          'id': user['id'].toString(), // ID را به String تبدیل می‌کنیم
+          'name': '${user['first_name'] ?? ''} ${user['last_name'] ?? ''}'.trim(),
+          'role': user['is_owner'] == 1 ? 'Hotelier' : 'Traveler', // فرض می‌کنیم is_owner نقش را مشخص می‌کند
+          'status': 'Active', // API وضعیت را نمی‌دهد، پیش‌فرض Active
+        }).toList();
+      });
+    } catch (e) {
+      print('Error fetching users: $e'); // خطا در دریافت کاربران
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load users: $e')), // خطا در بارگذاری کاربران
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   void _toggleUserStatus(String userId, String currentStatus) {
+    // TODO: پیاده‌سازی API برای تغییر وضعیت کاربر
     setState(() {
       final index = _users.indexWhere((user) => user['id'] == userId);
       if (index != -1) {
@@ -48,7 +78,9 @@ class _ManagementPanelScreenState extends State<ManagementPanelScreen> {
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.blue.shade800),
             ),
           ),
-          Expanded(
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               itemCount: _users.length,
@@ -92,8 +124,12 @@ class _ManagementPanelScreenState extends State<ManagementPanelScreen> {
                       ],
                     ),
                     onTap: () {
-                      print('User ${user['name']} tapped');
-                      // TODO: قابلیت مشاهده جزئیات بیشتر کاربر
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => UserDetailScreen(user: user),
+                        ),
+                      );
                     },
                   ),
                 );

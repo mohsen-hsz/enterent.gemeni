@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:hotel_reservation_app/screens/detail_page.dart';
 import 'package:hotel_reservation_app/screens/login_screen.dart';
 import 'package:hotel_reservation_app/screens/signup_screen.dart';
-import 'package:hotel_reservation_app/screens/traveler_home_screen.dart'; // تغییر نام
-import 'package:hotel_reservation_app/screens/hotelier_home_screen.dart'; // جدید
-import 'package:hotel_reservation_app/screens/management_panel_screen.dart'; // جدید: پنل مدیریت مشترک
-import 'package:hotel_reservation_app/screens/profile_screen.dart'; // پروفایل مسافر
-import 'package:hotel_reservation_app/screens/hotelier_profile_screen.dart'; // جدید: پروفایل هتل‌دار
+import 'package:hotel_reservation_app/screens/traveler_home_screen.dart';
+import 'package:hotel_reservation_app/screens/hotelier_home_screen.dart';
+import 'package:hotel_reservation_app/screens/management_panel_screen.dart';
+import 'package:hotel_reservation_app/screens/profile_screen.dart';
+import 'package:hotel_reservation_app/screens/hotelier_profile_screen.dart';
 import 'package:hotel_reservation_app/screens/reservations_screen.dart';
 import 'package:hotel_reservation_app/screens/reservation_history_screen.dart';
 import 'package:hotel_reservation_app/screens/my_wallet_screen.dart';
@@ -25,6 +25,7 @@ import 'package:hotel_reservation_app/screens/provider_service_history_screen.da
 import 'package:hotel_reservation_app/screens/provider_ratings_feedback_screen.dart';
 import 'package:hotel_reservation_app/screens/provider_chat_screen.dart';
 import 'package:hotel_reservation_app/screens/role_selection_screen.dart';
+import 'package:hotel_reservation_app/screens/user_detail_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -68,6 +69,9 @@ class MyApp extends StatelessWidget {
         '/provider_service_history': (context) => const ProviderServiceHistoryScreen(),
         '/provider_ratings_feedback': (context) => const ProviderRatingsFeedbackScreen(),
         '/provider_chat': (context) => const ProviderChatScreen(),
+        // توجه: UserDetailScreen مستقیماً از طریق MaterialPageRoute در ManagementPanelScreen فراخوانی می‌شود
+        // و نیازی به تعریف route در اینجا ندارد، مگر اینکه بخواهید از Navigator.pushNamed استفاده کنید.
+        // '/user_detail': (context) => UserDetailScreen(user: ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
       },
     );
   }

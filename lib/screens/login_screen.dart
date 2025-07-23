@@ -1,6 +1,7 @@
 // File: screens/login_screen.dart
 
 import 'package:flutter/material.dart';
+import 'package:hotel_reservation_app/services/api_service.dart'; // Import ApiService
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -11,8 +12,40 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailOrPhoneController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  bool _isLoading = false;
+
+  Future<void> _login() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      try {
+        final response = await ApiService.loginUser(_phoneController.text, _passwordController.text);
+        if (response['status'] == 'success' || response['access_token'] != null) {
+          // اگر ورود موفق بود و توکن دریافت شد، به صفحه انتخاب نقش می‌رویم
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Login successful!')), // ورود موفق!
+          );
+          Navigator.pushReplacementNamed(context, '/role_selection');
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Login failed: ${response['message'] ?? 'Invalid credentials'}')), // ورود ناموفق
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error during login: $e')), // خطا در هنگام ورود
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,36 +82,34 @@ class _LoginState extends State<Login> {
                     ),
                     const SizedBox(height: 30),
                     TextFormField(
-                      controller: _emailOrPhoneController,
+                      controller: _phoneController,
+                      keyboardType: TextInputType.phone,
+                      decoration: _buildInputDecoration(
+                          'Mobile Number', Icons.phone),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter email or mobile number';
+                          return 'Please enter your mobile number';
                         }
                         return null;
                       },
-                      decoration: _buildInputDecoration(
-                          'Email or Mobile Number', Icons.person),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
                       controller: _passwordController,
                       obscureText: true,
+                      decoration: _buildInputDecoration('Password', Icons.lock),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';
                         }
                         return null;
                       },
-                      decoration: _buildInputDecoration('Password', Icons.lock),
                     ),
                     const SizedBox(height: 30),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          // به صفحه انتخاب نقش هدایت می‌شویم
-                          Navigator.pushReplacementNamed(context, '/role_selection');
-                        }
-                      },
+                    _isLoading
+                        ? const CircularProgressIndicator()
+                        : ElevatedButton(
+                      onPressed: _login,
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 50, vertical: 15),
@@ -97,11 +128,10 @@ class _LoginState extends State<Login> {
                     const SizedBox(height: 20),
                     TextButton(
                       onPressed: () {
-                        // به صفحه ثبت‌نام هدایت می‌شویم
                         Navigator.pushNamed(context, '/signup');
                       },
                       child: Text(
-                        'Don’t have an account?',
+                        'Don’t have an account? Sign Up',
                         style: TextStyle(
                             color: Colors.blue.shade700, fontSize: 16),
                       ),
@@ -126,5 +156,12 @@ class _LoginState extends State<Login> {
       filled: true,
       fillColor: Colors.white.withOpacity(0.9),
     );
+  }
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }
