@@ -1,13 +1,10 @@
-// File: screens/profile_screen.dart
+//File : profile_screen.dart
 
 import 'package:flutter/material.dart';
-
 import 'package:hotel_reservation_app/screens/personal_info_screen.dart'; // Import for Personal Information
 import 'package:hotel_reservation_app/screens/change_password_screen.dart'; // Import for Change Password
 import 'package:hotel_reservation_app/screens/settings_screen.dart'; // Import for Settings
 import 'package:hotel_reservation_app/screens/support_screen.dart'; // Import for Support
-import 'package:hotel_reservation_app/services/api_service.dart'; // برای logout
-
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -67,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             const Text(
-              'ali.ahmadi@example.com', //ایمیل کاربر
+              'ali.ahmadi@example.com', // ایمیل کاربر
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey,
@@ -85,7 +82,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             _buildProfileInfoCard(
               icon: Icons.lock,
-              title: 'Change Password', //تغییر رمز عبور
+              title: 'Change Password', // تغییر رمز عبور
               subtitle: 'Change your account password', // رمز عبور خود را تغییر دهید
               onTap: () {
                 Navigator.pushNamed(context, '/change_password'); // Navigate to Change Password screen
@@ -113,7 +110,6 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 30),
             ElevatedButton.icon(
               onPressed: () {
-                ApiService.deleteTokenAndUserId(); // حذف توکن و User ID هنگام خروج
                 Navigator.pushReplacementNamed(context, '/'); // Return to login page
               },
               style: ElevatedButton.styleFrom(

@@ -6,16 +6,15 @@ import 'package:hotel_reservation_app/screens/reservations_screen.dart';
 import 'package:hotel_reservation_app/screens/home_content.dart';
 import 'package:hotel_reservation_app/screens/reservation_history_screen.dart';
 import 'package:hotel_reservation_app/screens/my_wallet_screen.dart';
-import 'package:hotel_reservation_app/services/api_service.dart'; // برای logout
 
-class TravelerHomeScreen extends StatefulWidget {
+class TravelerHomeScreen extends StatefulWidget { // تغییر نام کلاس
   const TravelerHomeScreen({super.key});
 
   @override
-  State<TravelerHomeScreen> createState() => _TravelerHomeScreenState();
+  State<TravelerHomeScreen> createState() => _TravelerHomeScreenState(); // تغییر نام State
 }
 
-class _TravelerHomeScreenState extends State<TravelerHomeScreen> {
+class _TravelerHomeScreenState extends State<TravelerHomeScreen> { // تغییر نام State
   int _selectedIndex = 0; // Index for bottom navigation bar
 
   // یک GlobalKey برای دسترسی به State مربوط به HomeContent (برای رفرش هتل‌ها)
@@ -106,6 +105,14 @@ class _TravelerHomeScreenState extends State<TravelerHomeScreen> {
                 Navigator.pushNamed(context, '/my_wallet'); // Navigate to My Wallet
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.chat, color: Colors.blue),
+              title: const Text('Chat with Users'), // چت با کاربران
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/provider_chat');
+              },
+            ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.admin_panel_settings, color: Colors.blue),
@@ -119,7 +126,6 @@ class _TravelerHomeScreenState extends State<TravelerHomeScreen> {
               leading: const Icon(Icons.logout, color: Colors.red),
               title: const Text('Logout'), // خروج
               onTap: () {
-                ApiService.deleteTokenAndUserId(); // حذف توکن و User ID هنگام خروج
                 Navigator.pushReplacementNamed(context, '/'); // Return to login page
               },
             ),

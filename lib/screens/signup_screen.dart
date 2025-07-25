@@ -1,7 +1,6 @@
 // File: screens/signup_screen.dart
 
 import 'package:flutter/material.dart';
-import 'package:hotel_reservation_app/services/api_service.dart'; // Import ApiService
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -13,58 +12,10 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  bool _isLoading = false;
-
-  Future<void> _register() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-      try {
-        final registerResponse = await ApiService.registerUser(
-          _firstNameController.text,
-          _lastNameController.text,
-          _phoneController.text,
-          _passwordController.text,
-        );
-
-        if (registerResponse['status'] == 'success' || registerResponse['id'] != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Registration successful! Now logging in...')), // ثبت‌نام موفق! در حال ورود...
-          );
-          // پس از ثبت‌نام موفق، تلاش می‌کنیم لاگین کنیم تا توکن دریافت شود
-          final loginResponse = await ApiService.loginUser(_phoneController.text, _passwordController.text);
-          if (loginResponse['status'] == 'success' || loginResponse['access_token'] != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Login successful after registration!')), // ورود موفق پس از ثبت‌نام!
-            );
-            Navigator.pushReplacementNamed(context, '/role_selection');
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Login failed after registration: ${loginResponse['message'] ?? 'Unknown error'}')), // ورود ناموفق پس از ثبت‌نام
-            );
-          }
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Registration failed: ${registerResponse['message'] ?? 'Unknown error'}')), // ثبت‌نام ناموفق
-          );
-        }
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error during registration: $e')), // خطا در هنگام ثبت‌نام
-        );
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +42,7 @@ class _SignupState extends State<Signup> {
                     ),
                     const SizedBox(height: 40),
                     Text(
-                      'Sign Up',
+                      'SignUp',
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -100,55 +51,59 @@ class _SignupState extends State<Signup> {
                     ),
                     const SizedBox(height: 30),
                     TextFormField(
-                      controller: _firstNameController,
-                      decoration: _buildInputDecoration('First Name', Icons.person_outline),
+                      controller: _nameController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your first name';
+                          return 'Please enter your full name';
                         }
                         return null;
                       },
+                      decoration: _buildInputDecoration('Full Name', Icons.person_outline),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
-                      controller: _lastNameController,
-                      decoration: _buildInputDecoration('Last Name', Icons.person_outline),
+                      controller: _emailController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your last name';
+                          return 'Please enter your email';
                         }
                         return null;
                       },
+                      decoration: _buildInputDecoration('Email', Icons.email),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
-                      controller: _phoneController,
-                      keyboardType: TextInputType.phone,
-                      decoration: _buildInputDecoration('Mobile Number', Icons.phone),
+                      controller: _mobileController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your mobile number';
                         }
                         return null;
                       },
+                      decoration: _buildInputDecoration('Mobile Number', Icons.phone),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
                       controller: _passwordController,
                       obscureText: true,
-                      decoration: _buildInputDecoration('Password', Icons.lock),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';
                         }
                         return null;
                       },
+                      decoration: _buildInputDecoration('Password', Icons.lock),
                     ),
                     const SizedBox(height: 30),
-                    _isLoading
-                        ? const CircularProgressIndicator()
-                        : ElevatedButton(
-                      onPressed: _register,
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          // به صفحه انتخاب نقش هدایت می‌شویم
+                          Navigator.pushReplacementNamed(context, '/role_selection');
+                        } else {
+                          // خطاهای ولیدیشن به طور خودکار نشان داده می‌شوند
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                         shape: RoundedRectangleBorder(
@@ -159,17 +114,18 @@ class _SignupState extends State<Signup> {
                         elevation: 5,
                       ),
                       child: const Text(
-                        'Sign Up',
+                        'SignUp',
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
                     const SizedBox(height: 20),
                     TextButton(
                       onPressed: () {
+                        // به صفحه ورود برمی‌گردیم
                         Navigator.pop(context);
                       },
                       child: Text(
-                        'Already have an account? Login',
+                        'Do you have an account? Please Enter',
                         style: TextStyle(color: Colors.blue.shade700, fontSize: 16),
                       ),
                     ),
@@ -193,14 +149,5 @@ class _SignupState extends State<Signup> {
       filled: true,
       fillColor: Colors.white.withOpacity(0.9),
     );
-  }
-
-  @override
-  void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _phoneController.dispose();
-    _passwordController.dispose();
-    super.dispose();
   }
 }

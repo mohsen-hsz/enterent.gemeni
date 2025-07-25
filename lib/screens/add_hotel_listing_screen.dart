@@ -1,6 +1,7 @@
-// File: screens/add_hotel_listing_screen.dart
+// File: lib/screens/add_hotel_listing_screen.dart
 import 'package:flutter/material.dart';
 import 'package:hotel_reservation_app/services/api_service.dart'; // Import ApiService
+import 'package:hotel_reservation_app/screens/provinces_page.dart'; // Import ProvincesPage
 
 class AddHotelListingScreen extends StatefulWidget {
   const AddHotelListingScreen({super.key});
@@ -16,8 +17,13 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _pricePerNightController = TextEditingController();
 
-  // متغیر برای نگهداری مسیر تصویر انتخاب شده (شبیه‌سازی)
-  String? _selectedImagePath; // مسیر تصویر انتخاب شده
+  String? _selectedImagePath; // مسیر تصویر انتخاب شده (شبیه‌سازی)
+
+  // متغیرها برای انتخاب استان و شهر
+  String? _selectedProvinceName;
+  int? _selectedProvinceId;
+  String? _selectedCityName;
+  int? _selectedCityId;
 
   bool _hasWifi = false; // امکانات: وای‌فای
   bool _hasPool = false; // امکانات: استخر
@@ -27,8 +33,20 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
   bool _hasKitchen = false; // امکانات: آشپزخانه
   bool _hasBathroom = false; // امکانات: حمام
 
-  // برای مدیریت وضعیت بارگذاری
-  bool _isLoading = false;
+  bool _isLoading = false; // برای مدیریت وضعیت بارگذاری
+
+  // تابع برای انتخاب استان و شهر
+  Future<void> _selectLocation() async {
+    final result = await Navigator.pushNamed(context, '/provinces_selection');
+    if (result != null && result is Map<String, dynamic>) {
+      setState(() {
+        _selectedProvinceId = result['province_id'];
+        _selectedProvinceName = result['province_name'];
+        _selectedCityId = result['city_id'];
+        _selectedCityName = result['city_name'];
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +112,7 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
               ),
               const SizedBox(height: 15),
 
-              // فیلد هزینه اتاق هتل (تغییر نام از Price per Night)
+              // فیلد هزینه اتاق هتل
               TextFormField(
                 controller: _pricePerNightController,
                 keyboardType: TextInputType.number,
@@ -111,13 +129,51 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
               ),
               const SizedBox(height: 15),
 
-              // فیلد آدرس هتل (تغییر نام از Address)
+              // فیلد انتخاب استان و شهر
+              GestureDetector(
+                onTap: _selectLocation,
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    decoration: _buildInputDecoration(
+                      'Province, City', // استان، شهر
+                      Icons.location_city,
+                      suffixIcon: _selectedProvinceName != null
+                          ? IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          setState(() {
+                            _selectedProvinceName = null;
+                            _selectedProvinceId = null;
+                            _selectedCityName = null;
+                            _selectedCityId = null;
+                          });
+                        },
+                      )
+                          : null,
+                    ),
+                    controller: TextEditingController(
+                      text: _selectedProvinceName == null
+                          ? ''
+                          : '${_selectedProvinceName!}, ${_selectedCityName ?? ''}',
+                    ),
+                    validator: (value) {
+                      if (_selectedProvinceId == null || _selectedCityId == null) {
+                        return 'Please select province and city'; // لطفا استان و شهر را انتخاب کنید
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+
+              // فیلد آدرس دقیق
               TextFormField(
                 controller: _addressController,
-                decoration: _buildInputDecoration('Hotel Address', Icons.location_on), // آدرس هتل
+                decoration: _buildInputDecoration('Detailed Address', Icons.location_on), // آدرس دقیق
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter hotel address'; // لطفا آدرس هتل را وارد کنید
+                    return 'Please enter detailed address'; // لطفا آدرس دقیق را وارد کنید
                   }
                   return null;
                 },
@@ -204,11 +260,18 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
                         setState(() { _isLoading = false; });
                         return;
                       }
+                      if (_selectedProvinceId == null || _selectedCityId == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Please select province and city.')), // لطفا استان و شهر را انتخاب کنید.
+                        );
+                        setState(() { _isLoading = false; });
+                        return;
+                      }
 
                       final hotelDataForApi = {
                         'name': _hotelNameController.text,
-                        'province_id': 18, // TODO: اینها باید از API config دریافت شوند
-                        'city_id': 70, // TODO: اینها باید از API config دریافت شوند
+                        'province_id': _selectedProvinceId, // استفاده از ID استان انتخاب شده
+                        'city_id': _selectedCityId, // استفاده از ID شهر انتخاب شده
                         'price_per_day': int.tryParse(_pricePerNightController.text) ?? 0,
                         'address': _addressController.text,
                         'owner_id': ownerId, // استفاده از owner_id واقعی
@@ -278,7 +341,7 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
   }
 
   // ویجت کمکی برای ظاهر فیلدهای ورودی
-  InputDecoration _buildInputDecoration(String label, IconData icon) {
+  InputDecoration _buildInputDecoration(String label, IconData icon, {Widget? suffixIcon}) {
     return InputDecoration(
       labelText: label,
       border: OutlineInputBorder(
@@ -287,6 +350,7 @@ class _AddHotelListingScreenState extends State<AddHotelListingScreen> {
       prefixIcon: Icon(icon),
       filled: true,
       fillColor: Colors.white.withOpacity(0.9),
+      suffixIcon: suffixIcon,
     );
   }
 

@@ -11,7 +11,6 @@ import 'package:hotel_reservation_app/screens/provider_ratings_feedback_screen.d
 import 'package:hotel_reservation_app/screens/provider_chat_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import جدید
 import 'dart:convert'; // برای تبدیل به JSON
-import 'package:hotel_reservation_app/services/api_service.dart'; // Import ApiService
 import 'package:hotel_reservation_app/screens/home_content.dart'; // Import HomeContent برای دسترسی به State آن
 
 class HotelierHomeScreen extends StatefulWidget {
@@ -22,62 +21,24 @@ class HotelierHomeScreen extends StatefulWidget {
 }
 
 class _HotelierHomeScreenState extends State<HotelierHomeScreen> {
-  // لیست هتل‌های اضافه شده توسط این هتل‌دار
-  List<Map<String, dynamic>> _myHotels = [];
-  bool _isLoading = true; // برای نمایش وضعیت بارگذاری
+  // لیست هتل‌های اضافه شده توسط این هتل‌دار (اطلاعات ساختگی)
+  List<Map<String, dynamic>> _myHotels = []; // لیست اولیه خالی است، از SharedPreferences بارگذاری می‌شود
 
   @override
   void initState() {
     super.initState();
-    _loadAndFetchMyHotels(); // بارگذاری و دریافت هتل‌های هتل‌دار هنگام شروع
+    _loadMyHotels(); // بارگذاری هتل‌های هتل‌دار هنگام شروع
   }
 
-  // تابع برای بارگذاری هتل‌های هتل‌دار از SharedPreferences و سپس دریافت از API
-  Future<void> _loadAndFetchMyHotels() async {
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final String? myHotelsString = prefs.getString('my_listed_hotels');
-
-      if (myHotelsString != null) {
+  // تابع برای بارگذاری هتل‌های هتل‌دار از SharedPreferences
+  Future<void> _loadMyHotels() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? myHotelsString = prefs.getString('my_listed_hotels');
+    if (myHotelsString != null) {
+      setState(() {
         _myHotels = (jsonDecode(myHotelsString) as List)
             .map((item) => item as Map<String, dynamic>)
             .toList();
-      }
-
-      // دریافت هتل‌ها از API
-      final apiHotels = await ApiService.getAccommodations();
-      // فرض می‌کنیم owner_id کاربر فعلی را داریم (مثلاً از توکن یا پس از ورود)
-      final int? currentOwnerId = await ApiService.getUserId(); // دریافت user_id کاربر لاگین شده
-
-      _myHotels.clear(); // لیست محلی را پاک می‌کنیم تا با داده‌های API به‌روز شود
-      if (currentOwnerId != null) {
-        for (var apiHotel in apiHotels) {
-          // فیلتر کردن هتل‌ها بر اساس owner_id
-          if (apiHotel['owner_id'] == currentOwnerId) {
-            _myHotels.add({
-              'hotelName': apiHotel['name'],
-              'image': 'assets/images/hotel_placeholder.jpg', // API تصویر مستقیم نمی‌دهد
-              'rating': 'N/A',
-              'price': '${apiHotel['price_per_day'] ?? 'N/A'} Toman',
-              'location': 'Province ${apiHotel['province_id'] ?? ''}, City ${apiHotel['city_id'] ?? ''}',
-              'description': apiHotel['address'] ?? 'No description provided.',
-              'amenities': {'wifi': false, 'pool': false, 'parking': false, 'restaurant': false, 'tv': false, 'kitchen': false, 'bathroom': false},
-            });
-          }
-        }
-      }
-      await _saveMyHotels(); // لیست به‌روز شده را ذخیره می‌کنیم
-    } catch (e) {
-      print('Error loading or fetching my hotels: $e'); // خطا در بارگذاری یا دریافت هتل‌ها
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load your hotels: $e')), // خطا در بارگذاری هتل‌های شما
-      );
-    } finally {
-      setState(() {
-        _isLoading = false;
       });
     }
   }
@@ -90,10 +51,6 @@ class _HotelierHomeScreenState extends State<HotelierHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return const Center(child: CircularProgressIndicator()); // نمایش لودینگ
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Hotels (Hotelier Panel)', style: TextStyle(color: Colors.white)), // هتل‌های من (پنل هتل‌دار)
@@ -109,7 +66,7 @@ class _HotelierHomeScreenState extends State<HotelierHomeScreen> {
           ),
         ],
       ),
-      drawer: Drawer(
+      drawer: Drawer( // اضافه کردن Drawer برای هتل‌دار
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
@@ -204,14 +161,13 @@ class _HotelierHomeScreenState extends State<HotelierHomeScreen> {
               leading: const Icon(Icons.logout, color: Colors.red),
               title: const Text('Logout'), // خروج
               onTap: () {
-                ApiService.deleteTokenAndUserId(); // حذف توکن و User ID هنگام خروج
                 Navigator.pushReplacementNamed(context, '/'); // بازگشت به صفحه ورود
               },
             ),
           ],
         ),
       ),
-      body: _myHotels.isEmpty && !_isLoading
+      body: _myHotels.isEmpty
           ? const Center(
         child: Text(
           'You have not listed any hotels yet.\nTap the + button to add a new hotel!', // شما هنوز هتلی لیست نکرده‌اید. دکمه + را برای افزودن هتل جدید لمس کنید!
@@ -232,8 +188,16 @@ class _HotelierHomeScreenState extends State<HotelierHomeScreen> {
           print('Add new hotel listing FAB pressed from Hotelier Home'); // برای دیباگ
           final newHotel = await Navigator.pushNamed(context, '/add_hotel_listing');
           if (newHotel != null && newHotel is Map<String, dynamic>) {
-            // پس از اضافه شدن هتل جدید، لیست را دوباره بارگذاری می‌کنیم تا از API به‌روز شود
-            _loadAndFetchMyHotels();
+            setState(() {
+              _myHotels.add(newHotel); // افزودن هتل جدید به لیست هتل‌های هتل‌دار
+            });
+            _saveMyHotels(); // ذخیره لیست هتل‌های هتل‌دار
+            // همچنین باید این هتل را به لیست کلی هتل‌ها در HomeContent اضافه کنیم
+            // این کار نیاز به یک مکانیسم مرکزی برای مدیریت داده‌های هتل دارد.
+            // برای سادگی فعلی، مستقیماً به HomeContentState دسترسی پیدا می‌کنیم.
+            // این روش مستقیم نیست و برای یک معماری بهتر باید از Provider یا Riverpod استفاده شود.
+            // فعلاً برای شبیه‌سازی، پس از اضافه شدن هتل توسط هتل‌دار، لیست کلی هتل‌ها را نیز به‌روزرسانی می‌کنیم.
+            _updateAllHotels(newHotel); // به‌روزرسانی لیست کلی هتل‌ها
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('New hotel added: ${newHotel['hotelName']}')), // هتل جدید اضافه شد:
             );
@@ -246,6 +210,20 @@ class _HotelierHomeScreenState extends State<HotelierHomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startDocked, // قرار دادن دکمه در سمت چپ پایین
     );
+  }
+
+  // تابع برای به‌روزرسانی لیست کلی هتل‌ها (که توسط Traveler دیده می‌شود)
+  Future<void> _updateAllHotels(Map<String, dynamic> newHotel) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? allHotelsString = prefs.getString('all_hotels');
+    List<Map<String, dynamic>> allHotels = [];
+    if (allHotelsString != null) {
+      allHotels = (jsonDecode(allHotelsString) as List)
+          .map((item) => item as Map<String, dynamic>)
+          .toList();
+    }
+    allHotels.add(newHotel);
+    prefs.setString('all_hotels', jsonEncode(allHotels));
   }
 
   // ویجت برای ساخت کارت هتل (مشابه HomeContent)

@@ -1,4 +1,4 @@
-// File: screens/detail_page.dart
+// File: lib/screens/detail_page.dart
 
 import 'package:flutter/material.dart';
 import 'package:hotel_reservation_app/screens/support2.dart'; // برای Appwidget

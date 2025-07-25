@@ -2,6 +2,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../models/province.dart'; // Import مدل Province
+import '../models/city.dart';     // Import مدل City
+import '../models/user.dart';     // Import مدل User
+import '../models/login_response.dart'; // Import مدل LoginResponse
 
 class ApiService {
   // Base URL برای API شما
@@ -170,8 +174,8 @@ class ApiService {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      final responseData = jsonDecode(response.body);
-      return responseData['data'] ?? [];
+      final List<dynamic> data = jsonDecode(response.body);
+      return data; // API شما مستقیماً لیست را برمی‌گرداند، نه در 'data'
     } else {
       throw Exception('Failed to get cities for province $provinceId: ${response.body}');
     }

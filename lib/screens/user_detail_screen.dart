@@ -1,5 +1,3 @@
-// File: screens/user_detail_screen.dart
-
 import 'package:flutter/material.dart';
 
 class UserDetailScreen extends StatelessWidget {
@@ -9,7 +7,7 @@ class UserDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // داده‌های نمونه برای رزروها و تراکنش‌ها (اینها باید از API دریافت شوند)
+    // داده‌های نمونه برای رزروها و تراکنش‌ها
     final List<Map<String, String>> reservations = [
       {'date': '2025-07-10', 'hotel': 'Hotel Iran', 'price': '1,200,000 Toman'},
       {'date': '2025-06-15', 'hotel': 'Pars Hotel', 'price': '900,000 Toman'},
@@ -31,83 +29,49 @@ class UserDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            _sectionTitle('1. User Info'), // اطلاعات کاربر
+            _sectionTitle('1. User Info Form'),
             Card(
-              margin: const EdgeInsets.only(bottom: 12.0),
-              elevation: 2,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: user['role'] == 'Traveler' ? Colors.blue.shade100 : Colors.orange.shade100,
-                  child: Icon(
-                    user['role'] == 'Traveler' ? Icons.person : Icons.hotel,
-                    color: user['role'] == 'Traveler' ? Colors.blue.shade700 : Colors.orange.shade700,
-                  ),
-                ),
-                title: Text('Name: ${user['name']}', style: const TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text('Role: ${user['role']} | ID: ${user['id']} | Status: ${user['status']}'),
+                title: Text('Name: ${user['name']}'),
+                subtitle: Text('Role: ${user['role']} | Status: ${user['status']}'),
               ),
             ),
 
             const SizedBox(height: 20),
-            _sectionTitle('2. Reservation History'), // تاریخچه رزرو
-            reservations.isEmpty
-                ? const Text('No reservations found.', style: TextStyle(color: Colors.grey))
-                : Column(
-              children: reservations.map((res) => Card(
-                margin: const EdgeInsets.only(bottom: 8.0),
-                elevation: 1,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                child: ListTile(
-                  leading: const Icon(Icons.hotel, color: Colors.blue),
-                  title: Text('Hotel: ${res['hotel']}'),
-                  subtitle: Text('Date: ${res['date']}'),
-                  trailing: Text(res['price']!),
-                ),
-              )).toList(),
-            ),
+            _sectionTitle('2. Reservation History'),
+            ...reservations.map((res) => Card(
+              child: ListTile(
+                leading: const Icon(Icons.hotel),
+                title: Text('Hotel: ${res['hotel']}'),
+                subtitle: Text('Date: ${res['date']}'),
+                trailing: Text(res['price']!),
+              ),
+            )),
 
             const SizedBox(height: 20),
-            _sectionTitle('3. Financial Reports'), // گزارشات مالی
-            transactions.isEmpty
-                ? const Text('No transactions found.', style: TextStyle(color: Colors.grey))
-                : Column(
-              children: transactions.map((txn) => Card(
-                margin: const EdgeInsets.only(bottom: 8.0),
-                elevation: 1,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                child: ListTile(
-                  leading: const Icon(Icons.attach_money, color: Colors.green),
-                  title: Text('Amount: ${txn['amount']}'),
-                  subtitle: Text('Date: ${txn['date']}'),
-                  trailing: Text(txn['type']!),
-                ),
-              )).toList(),
-            ),
+            _sectionTitle('3. Financial Reports'),
+            ...transactions.map((txn) => Card(
+              child: ListTile(
+                leading: const Icon(Icons.attach_money),
+                title: Text('Amount: ${txn['amount']}'),
+                subtitle: Text('Date: ${txn['date']}'),
+                trailing: Text(txn['type']!),
+              ),
+            )),
 
             const SizedBox(height: 20),
-            _sectionTitle('4. Summary Report'), // گزارش خلاصه
+            _sectionTitle('4. Summary Report'),
             Card(
-              margin: const EdgeInsets.only(bottom: 12.0),
-              elevation: 2,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Total Reservations: ${reservations.length}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    Text(
-                      'Total Transactions: ${transactions.length}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ],
+                child: Text(
+                  'Total Reservations: ${reservations.length}\n'
+                  'Total Transactions: ${transactions.length}',
+                  style: const TextStyle(fontSize: 16),
                 ),
               ),
             ),
+
           ],
         ),
       ),
@@ -115,12 +79,9 @@ class UserDetailScreen extends StatelessWidget {
   }
 
   Widget _sectionTitle(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Text(
-        text,
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue.shade800),
-      ),
+    return Text(
+      text,
+      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue.shade800),
     );
   }
 }
